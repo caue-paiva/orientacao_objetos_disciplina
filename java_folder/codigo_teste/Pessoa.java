@@ -1,20 +1,20 @@
 package java_folder.codigo_teste;
 
-public class pessoa {
+public class Pessoa {
 
     static final int ano_atual = 2024;
 
     public String nome;
-    int ano_nascimento;
+    public int ano_nascimento;
     public float altura;
     public int idade;
-    private int cpf;
     public int peso;
 
-
+    private int cpf;
+    
     //constructor em java é uma funcao com o nome da classe
     // this = self do python
-    pessoa(int cpf, int idade, float altura, int ano_nascimento, String nome){
+    Pessoa(int cpf, int idade, float altura, int ano_nascimento, String nome){
         this.cpf = cpf;
         this.idade = idade;
         this.nome = nome;

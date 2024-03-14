@@ -2,7 +2,7 @@ package java_folder.codigo_teste;
 
 import java.util.Scanner;
 
-import java_folder.codigo_teste.pessoa;
+import java_folder.codigo_teste.Pessoa;
 
 
 class main {

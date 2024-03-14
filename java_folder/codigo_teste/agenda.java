@@ -1,17 +1,16 @@
 package java_folder.codigo_teste;
-
-import java_folder.codigo_teste.pessoa;
+import java_folder.codigo_teste.Pessoa;
 
 public class agenda {
     static final int capacidade = 100;
 
-    private pessoa[] pessoas;
+    private Pessoa[] pessoas;
 
     agenda(){
-        this.pessoas = new pessoa[capacidade];
+        this.pessoas = new Pessoa[capacidade];
     }
     
-    public void armazenar_pessoa(pessoa pessoa){
+    public void armazenar_pessoa(Pessoa pessoa){
         for (int i = 0; i < capacidade; i++){
             if (this.pessoas[i] == null){
                 this.pessoas[i] = pessoa;
@@ -20,7 +19,7 @@ public class agenda {
         }
     }
 
-    public pessoa achar_pessoas(String nome){
+    public Pessoa achar_pessoas(String nome){
         for (int i = 0; i < capacidade; i++){
             if (this.pessoas[i].nome == nome){
                 return this.pessoas[i];
