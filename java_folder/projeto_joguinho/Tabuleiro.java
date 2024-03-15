@@ -99,24 +99,24 @@ public class Tabuleiro {
 
     private void encheTabuleiro(){
         
-        final int tamanho_lista = this.tamanho * this.tamanho;
-        List<Integer> numeros = IntStream.rangeClosed(0, tamanho_lista-1).boxed().collect(Collectors.toList());
+        final int tamanho_lista = this.tamanho * this.tamanho; //numero de casos no tabuleiro
+        List<Integer> numeros = IntStream.rangeClosed(0, tamanho_lista-1).boxed().collect(Collectors.toList()); //gera uma lista de numeros com as casas do tabuleiro, de 0 ate num_casas -1
         
-        Collections.shuffle(numeros);
+        Collections.shuffle(numeros); //embaralha essa lista
 
         int index_atual = 0; //guarda o index da lista que vamos acessar
         for (int i = 0 ; i < this.tamanho; i++) {
             for (int j = 0 ; j < this.tamanho; j++) {
-                int numero_add = numeros.get(index_atual);
+                int numero_add = numeros.get(index_atual); //numero que vamos add
                 
-                if ( numero_add == 0){ //o zero nao vai aparecer no tabuleiro e no seu lugar vai ter o whitespace
+                if (numero_add == 0){ //o zero nao vai aparecer no tabuleiro e no seu lugar vai ter o whitespace
                      this.tabuleiro[i][j] = WHITESPACE; //seta ele como -1 para identificacao de whitespace
-                     this.posicaoWhiteSpace = new int[]{i, j};
+                     this.posicaoWhiteSpace = new int[]{i, j}; //guarda a posicao do whitespace
                      index_atual += 1;
                      continue;
                 }
-                this.tabuleiro[i][j] = numeros.get(index_atual);
-                index_atual +=1;           
+                this.tabuleiro[i][j] = numeros.get(index_atual); //coloca o valor atual no tabuleiro
+                index_atual +=1;     //incrementa o index, para acessar o proximo num      
             }
         }
    }
