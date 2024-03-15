@@ -1,7 +1,6 @@
 package java_folder.projeto_joguinho;
 
 import java.util.Collections;
-import java.util.Random;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
