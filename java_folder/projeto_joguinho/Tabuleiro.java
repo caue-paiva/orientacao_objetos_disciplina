@@ -12,28 +12,20 @@ public class Tabuleiro {
 
     public int[][] tabuleiro;
     public final int tamanho;
-    public  int[] posicaoWhiteSpace;
-    private List<Integer> numeros;
+    public  int[] posicaoWhiteSpace; //index 0 = linha do whitespace, index 1 = coluna do whitespace
 
     public static void main(String[] args) {
-        Tabuleiro tabuleiro = new Tabuleiro(4);
+        Tabuleiro tabuleiro = new Tabuleiro(3);
         tabuleiro.encheTabuleiro();
-
         tabuleiro.printTabuleiro();
-
-        tabuleiro.trocaPosicoes(0, 0, 1, 0);
-
-        tabuleiro.printTabuleiro();
-
-        tabuleiro.estadoVitoria();
     }
-
 
     Tabuleiro(final int tamanho){
           this.tamanho = tamanho;
           this.tabuleiro = new int[tamanho][tamanho];
+          this.encheTabuleiro();
     }
-
+  
     public boolean trocaPosicoes(final int i1, final int j1 , final int i2 ,  final int j2){
         if (i1> tamanho -1 || j1 > tamanho -1 || i2 > tamanho -1 ||  j2 > tamanho -1 ) //caso a posicao esteja fora do escopo do tabuleiro, indexado por 0
             return false;
@@ -41,10 +33,19 @@ public class Tabuleiro {
         if (i1 == i2 && j1 == j2) //caso seja pedido para mover a mesma posicao
             return false;
         
-        int valPrimeiraPosi = this.tabuleiro[i1][j1];
+        int valPrimeiraPosi = this.tabuleiro[i1][j1]; //troca posicoes
 
         this.tabuleiro[i1][j1] = this.tabuleiro[i2][j2];
         this.tabuleiro[i2][j2] = valPrimeiraPosi;
+
+
+        if(i1 == this.posicaoWhiteSpace[0] && j1 == this.posicaoWhiteSpace[1]){ //caso uma das casa modificados forem a posicao do whitespace, vamos mudar ela
+            this.posicaoWhiteSpace[0] = i2;
+            this.posicaoWhiteSpace[1] = j2;
+        }else if(i2 == this.posicaoWhiteSpace[0] && j2 == this.posicaoWhiteSpace[1]){
+            this.posicaoWhiteSpace[0] = i1;
+            this.posicaoWhiteSpace[1] = j1;
+        }
 
         return true;
     }
@@ -99,33 +100,25 @@ public class Tabuleiro {
     private void encheTabuleiro(){
         
         final int tamanho_lista = this.tamanho * this.tamanho;
-        List<Integer> numeros = IntStream.rangeClosed(1, tamanho_lista).boxed().collect(Collectors.toList());
+        List<Integer> numeros = IntStream.rangeClosed(0, tamanho_lista-1).boxed().collect(Collectors.toList());
         
         Collections.shuffle(numeros);
-        this.numeros = numeros;
-
-        Random rand = new Random();
-        int index_remover = rand.nextInt(tamanho_lista);
-          
-        System.out.println(numeros);
-        numeros.remove(index_remover);
 
         int index_atual = 0; //guarda o index da lista que vamos acessar
-        loop_externo:
         for (int i = 0 ; i < this.tamanho; i++) {
             for (int j = 0 ; j < this.tamanho; j++) {
-                if (index_atual == index_remover){ //se o index atual for o index do numero que foi removido
+                int numero_add = numeros.get(index_atual);
+                
+                if ( numero_add == 0){ //o zero nao vai aparecer no tabuleiro e no seu lugar vai ter o whitespace
                      this.tabuleiro[i][j] = WHITESPACE; //seta ele como -1 para identificacao de whitespace
                      this.posicaoWhiteSpace = new int[]{i, j};
                      index_atual += 1;
                      continue;
                 }
-                if (index_atual >= tamanho_lista -1) //caso estivermos no ultimo indice
-                    break loop_externo;
                 this.tabuleiro[i][j] = numeros.get(index_atual);
-                index_atual +=1;
+                index_atual +=1;           
             }
         }
-    }
-    
+   }
+
 }
