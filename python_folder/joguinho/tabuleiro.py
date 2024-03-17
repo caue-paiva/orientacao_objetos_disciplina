@@ -54,7 +54,7 @@ class Tabuleiro:
              cur_value+=1
          
    def troca_posicoes(self, i1:int, j1:int, i2:int, j2:int)->bool:
-      if any( x < 0 for x  in[i1, j1, i2, j2])  or any( x >= self.tamanho for x in [i1, j1, i2, j2]):     
+      if any(x < 0 for x in[i1, j1, i2, j2]) or any(x >= self.tamanho for x in [i1, j1, i2, j2]):     
           return False
 
       tmp: int = self.tabuleiro[i1][j1]
