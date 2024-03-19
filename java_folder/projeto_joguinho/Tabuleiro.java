@@ -28,6 +28,8 @@ public class Tabuleiro {
     public boolean trocaPosicoes(final int i1, final int j1 , final int i2 ,  final int j2){
         if (i1> tamanho -1 || j1 > tamanho -1 || i2 > tamanho -1 ||  j2 > tamanho -1 ) //caso a posicao esteja fora do escopo do tabuleiro, indexado por 0
             return false;
+        if (i1 < 0|| j1  < 0 || i2 < 0|| j2   < 0 ) //caso a posicao esteja fora do escopo do tabuleiro, indexado por 0
+            return false;
         
         if (i1 == i2 && j1 == j2) //caso seja pedido para mover a mesma posicao
             return false;
