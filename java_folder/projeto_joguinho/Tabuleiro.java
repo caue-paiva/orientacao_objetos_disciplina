@@ -1,6 +1,5 @@
 package java_folder.projeto_joguinho;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
