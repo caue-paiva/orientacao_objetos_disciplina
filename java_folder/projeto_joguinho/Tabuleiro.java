@@ -1,5 +1,7 @@
 package java_folder.projeto_joguinho;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,15 +16,38 @@ public class Tabuleiro {
     public  int[] posicaoWhiteSpace; //index 0 = linha do whitespace, index 1 = coluna do whitespace
 
     public static void main(String[] args) {
-        Tabuleiro tabuleiro = new Tabuleiro(3);
-        tabuleiro.encheTabuleiro();
+        Tabuleiro tabuleiro = new Tabuleiro(3, new int[]{11,8,0,1,2,6,4,5,9,7,8});
         tabuleiro.printTabuleiro();
+    
     }
-
+    //constructor onde o usar passar apenas o tamanho do tabuleiro
     Tabuleiro(final int tamanho){
           this.tamanho = tamanho;
           this.tabuleiro = new int[tamanho][tamanho];
           this.encheTabuleiro();
+    }
+
+    //constructor onde o usar passa o array de elementos
+    Tabuleiro(final int tamanho, int[] numeros)  {
+        if (numeros.length != tamanho * tamanho) {
+            System.out.println("Tamanho do vetor numeros tem que ser igual ao tamanho ao quadrado");
+            System.exit(0);
+        }
+        boolean whiteSpaceExiste = Arrays.stream(numeros).anyMatch(num -> num == WHITESPACE);
+        if (!whiteSpaceExiste){
+            System.out.println("Um dos elementos do vetor numeros deve ser -1, representando whitespace");
+            System.exit(0);
+        }
+        
+        this.tamanho = tamanho;
+        this.tabuleiro = new int[tamanho][tamanho];
+        int index_atual = 0; 
+        for (int i = 0; i < tamanho; i++) {
+            for (int j = 0; j < tamanho; j++){
+                this.tabuleiro[i][j] = numeros[index_atual];
+                index_atual++;
+            }
+        }
     }
   
     public boolean trocaPosicoes(final int i1, final int j1 , final int i2 ,  final int j2){
