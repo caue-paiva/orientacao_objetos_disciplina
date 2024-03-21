@@ -1,4 +1,3 @@
-package java_folder.projeto_joguinho;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,10 +13,10 @@ public class Tabuleiro {
     public final int tamanho;
     public  int[] posicaoWhiteSpace; //index 0 = linha do whitespace, index 1 = coluna do whitespace
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         Tabuleiro tabuleiro = new Tabuleiro(3, new int[]{3,0,1,2,8,5,4,6,7}); //construtor onde é passado uma lista
         tabuleiro.printTabuleiro();
-    }
+    }*/
 
     //constructor onde o usar passar apenas o tamanho do tabuleiro
     Tabuleiro(final int tamanho) {
@@ -126,8 +125,14 @@ public class Tabuleiro {
                 int val = this.tabuleiro[i][j];
                 if (val ==  WHITESPACE)
                     System.out.printf("   %d  ", WHITESPACE); 
-                else
-                    System.out.printf("   %d  ", val); 
+                else{
+                    if (val >= 10){
+                        System.out.printf("  %d  ", val);
+                    }else{
+                        System.out.printf("   %d  ", val);
+                    }
+                }
+                    
             }
             
             System.out.println("|");
