@@ -9,14 +9,40 @@ public class Jogo {
    private static Scanner scan; //variavel estatica para o scanner do input do usuário
 
    public static void main(String[] args) {
-      Jogo jogo = new Jogo(2); //construtor apenas com tamanho do tabuleiro
+      Scanner scan2 = new Scanner(System.in);
+      String linhaNum = scan2.nextLine();
+      String[] partesLinhaNum = linhaNum.split(" ");
+        
+      int[] numeros = new int[partesLinhaNum.length];
+        
+      for (int i = 0; i < partesLinhaNum.length; i++) {
+            numeros[i] = Integer.parseInt(partesLinhaNum[i]);
+      }
+
+      String linhaComandos = scan2.nextLine();
+
+      System.out.println(linhaComandos);
+      int tamTabu = (int) Math.sqrt(numeros.length);
+
+      Jogo jogo = new Jogo(tamTabu, numeros);
+      jogo.Tabuleiro.printTabuleiro();
+
+      if (jogo.testa_movimentos(linhaComandos))
+          System.out.println("Posicao final: true");
+      else
+          System.out.println("Posicao final: false");
+      
+      
+      scan2.close();
+      
+      /*Jogo jogo = new Jogo(2); //construtor apenas com tamanho do tabuleiro
      
       while(!jogo.Tabuleiro.estadoVitoria()){  //joga o jogo até o estado da vitória
          jogo.jogar();
       }
       jogo.Tabuleiro.printTabuleiro();
       System.out.println("Parabens, você venceu !!"); //msg de vitória
-      scan.close(); //fecha o scanner
+      scan.close(); //fecha o scanner*/
    }
 
   
@@ -27,7 +53,6 @@ public class Jogo {
 
    Jogo (final int tamanho, final int[] numeros){
       this.Tabuleiro = new Tabuleiro(tamanho, numeros);
-      scan = new  Scanner(System.in);
    }
 
    private String inputUsuario(){
@@ -44,12 +69,26 @@ public class Jogo {
 
    public void jogar(){
       this.Tabuleiro.printTabuleiro(); //printa o tabuleiro na tela
-     // System.out.println("Posicao do whitespace " + this.Tabuleiro.posicaoWhiteSpace[0] + this.Tabuleiro.posicaoWhiteSpace[1] + "\n");
 
       String movimento = this.inputUsuario(); //pega input do usuario
       if (movimento.equals("")) //input invalido
           return;
       executaComandos(movimento);  //executa o comando do user
+   }
+
+   public boolean testa_movimentos(String movimentos){
+      
+      for (int i = 0; i < movimentos.length(); i++) {
+          String movimento = String.valueOf(movimentos.charAt(i)).toUpperCase();
+         // System.out.println("Movimento: "+ movimento+ " ");
+          this.executaComandos(movimento);
+          this.Tabuleiro.printTabuleiro();
+      }
+
+      if (this.Tabuleiro.estadoVitoria())
+         return true;
+      else
+         return false;
    }
 
    private void executaComandos(final String movimento){

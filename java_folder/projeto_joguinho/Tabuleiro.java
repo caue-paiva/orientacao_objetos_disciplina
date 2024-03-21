@@ -8,14 +8,14 @@ import java.util.stream.IntStream;
 
 public class Tabuleiro {
 
-    static final int WHITESPACE = -1; 
+    static final int WHITESPACE = 0; 
 
     public int[][] tabuleiro;
     public final int tamanho;
     public  int[] posicaoWhiteSpace; //index 0 = linha do whitespace, index 1 = coluna do whitespace
 
     public static void main(String[] args) {
-        Tabuleiro tabuleiro = new Tabuleiro(3, new int[]{3,-1,1,2,8,5,4,6,7}); //construtor onde é passado uma lista
+        Tabuleiro tabuleiro = new Tabuleiro(3, new int[]{3,0,1,2,8,5,4,6,7}); //construtor onde é passado uma lista
         tabuleiro.printTabuleiro();
     }
 
@@ -34,13 +34,13 @@ public class Tabuleiro {
         }
         boolean whiteSpaceExiste = Arrays.stream(numeros).anyMatch(num -> num == WHITESPACE);
         if (!whiteSpaceExiste){
-            System.out.println("Um dos elementos do vetor numeros deve ser -1, representando whitespace");
+            System.out.println("Um dos elementos do vetor numeros deve ser 0, representando whitespace");
             System.exit(0);
         }
         int[] numeroOrde = Arrays.copyOf(numeros, numeros.length);
         Arrays.sort(numeroOrde);
 
-        if (numeroOrde[0] != -1){
+        if (numeroOrde[0] != WHITESPACE){
             System.out.println("O menor valor dos numeros devem ser -1");
             System.exit(0);
         }
@@ -58,7 +58,11 @@ public class Tabuleiro {
         for (int i = 0; i < tamanho; i++) {
             for (int j = 0; j < tamanho; j++){
                 this.tabuleiro[i][j] = numeros[index_atual];
+                if (numeros[index_atual] == WHITESPACE){
+                   this.posicaoWhiteSpace = new int[]{i, j};
+                }
                 index_atual++;
+                
             }
         }
     }
@@ -112,7 +116,7 @@ public class Tabuleiro {
 
     public void printTabuleiro(){ //imprime o tabuleiro e seus números na tela
         for (int i = 0; i < this.tamanho; i++) {
-            System.out.print("+---");
+            System.out.print("+------");
         }
         System.out.println("+");
     
@@ -121,16 +125,16 @@ public class Tabuleiro {
                 System.out.print("|");
                 int val = this.tabuleiro[i][j];
                 if (val ==  WHITESPACE)
-                    System.out.print("   "); 
+                    System.out.printf("   %d  ", WHITESPACE); 
                 else
-                    System.out.printf("%3d", val); 
+                    System.out.printf("   %d  ", val); 
             }
             
             System.out.println("|");
     
           
             for (int j = 0; j < this.tamanho; j++) {
-                System.out.print("+---");
+                System.out.print("+------");
             }
             System.out.println("+");
         }
