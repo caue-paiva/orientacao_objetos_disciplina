@@ -15,15 +15,15 @@ public class Tabuleiro {
     public  int[] posicaoWhiteSpace; //index 0 = linha do whitespace, index 1 = coluna do whitespace
 
     public static void main(String[] args) {
-        Tabuleiro tabuleiro = new Tabuleiro(3, new int[]{11,8,0,1,2,6,4,5,9,7,8});
+        Tabuleiro tabuleiro = new Tabuleiro(3, new int[]{3,-1,1,2,8,5,4,6,7}); //construtor onde é passado uma lista
         tabuleiro.printTabuleiro();
-    
     }
+
     //constructor onde o usar passar apenas o tamanho do tabuleiro
-    Tabuleiro(final int tamanho){
-          this.tamanho = tamanho;
-          this.tabuleiro = new int[tamanho][tamanho];
-          this.encheTabuleiro();
+    Tabuleiro(final int tamanho) {
+        this.tamanho = tamanho;
+        this.tabuleiro = new int[tamanho][tamanho];
+        this.encheTabuleiro();
     }
 
     //constructor onde o usar passa o array de elementos
@@ -36,6 +36,20 @@ public class Tabuleiro {
         if (!whiteSpaceExiste){
             System.out.println("Um dos elementos do vetor numeros deve ser -1, representando whitespace");
             System.exit(0);
+        }
+        int[] numeroOrde = Arrays.copyOf(numeros, numeros.length);
+        Arrays.sort(numeroOrde);
+
+        if (numeroOrde[0] != -1){
+            System.out.println("O menor valor dos numeros devem ser -1");
+            System.exit(0);
+        }
+
+        for (int i = 1; i < numeroOrde.length; i++) {
+            if (i != numeroOrde[i]){
+                System.out.println("os numeros estão fora de ordem");
+                System.exit(0);
+            }
         }
         
         this.tamanho = tamanho;
