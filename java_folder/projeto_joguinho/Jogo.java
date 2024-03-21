@@ -83,6 +83,7 @@ public class Jogo {
          // System.out.println("Movimento: "+ movimento+ " ");
           this.executaComandos(movimento);
           this.Tabuleiro.printTabuleiro();
+          System.out.println();
       }
 
       if (this.Tabuleiro.estadoVitoria())
@@ -100,7 +101,7 @@ public class Jogo {
          case "U": 
 
             if((!this.Tabuleiro.trocaPosicoes(linhaWhitespace,colunaWhitespace,linhaWhitespace+1,colunaWhitespace))){
-               System.out.println("Não é possivel subir");
+              // System.out.println("Não é possivel subir");
                return;
             }  //verifica se o movimento é possivel (ex: não pode subir se estiver no topo do tabuleiro) e se a mudanca de posicoes teve sucesso        
             
@@ -108,14 +109,14 @@ public class Jogo {
          case "D":
             
             if((!this.Tabuleiro.trocaPosicoes(linhaWhitespace,colunaWhitespace,linhaWhitespace-1,colunaWhitespace))){
-               System.out.println("Não é possivel descer");
+              // System.out.println("Não é possivel descer");
                return;
             }   
             break;
          case "L":
       
             if((!this.Tabuleiro.trocaPosicoes(linhaWhitespace,colunaWhitespace,linhaWhitespace, colunaWhitespace+1))){
-               System.out.println("Não é possivel ir para esquerda");
+              // System.out.println("Não é possivel ir para esquerda");
                return;
             }   
             break;
@@ -123,12 +124,12 @@ public class Jogo {
             
            
             if((!this.Tabuleiro.trocaPosicoes(linhaWhitespace,colunaWhitespace,linhaWhitespace,colunaWhitespace-1))){
-               System.out.println("Não é possivel ir para direita");
+              // System.out.println("Não é possivel ir para direita");
                return;
             }  
             break;
          default:
-            System.out.println("Movimento nao valido");
+            //System.out.println("Movimento nao valido");
             break;
        }
 
