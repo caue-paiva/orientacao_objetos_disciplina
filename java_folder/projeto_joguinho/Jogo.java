@@ -5,28 +5,34 @@ import java.util.Scanner;
 public class Jogo {
 
    private Tabuleiro Tabuleiro;
-   private final int tamanho;
    static private final String movimentosPossiveis = "UDLR"; //variavel estatica de classe para os comandos permitidos no jogo
+   private static Scanner scan; //variavel estatica para o scanner do input do usuário
 
    public static void main(String[] args) {
-      Jogo jogo = new Jogo(2);
-      while(!jogo.Tabuleiro.estadoVitoria()){ //loop ate que o estado de vitoria seja atingido
+      Jogo jogo = new Jogo(2); //construtor apenas com tamanho do tabuleiro
+     
+      while(!jogo.Tabuleiro.estadoVitoria()){  //joga o jogo até o estado da vitória
          jogo.jogar();
       }
-      System.out.println("Parabens, você venceu !!");
+      jogo.Tabuleiro.printTabuleiro();
+      System.out.println("Parabens, você venceu !!"); //msg de vitória
+      scan.close(); //fecha o scanner
    }
 
   
-  
-   Jogo(final int tamanho){
-       this.tamanho = tamanho;
+   Jogo(final int tamanho){ //construtor onde apenas o tamanho é dado
        this.Tabuleiro = new Tabuleiro(tamanho);
+       scan = new Scanner(System.in);
+   }
+
+   Jogo (final int tamanho, final int[] numeros){
+      this.Tabuleiro = new Tabuleiro(tamanho, numeros);
+      scan = new  Scanner(System.in);
    }
 
    private String inputUsuario(){
-      Scanner scanner = new Scanner(System.in);
       System.out.print("Proximo movimento U/D/L/R: ");
-      String inputUsuario = scanner.nextLine().toUpperCase(); //pega input do user e coloca ele como uppercase
+      String inputUsuario = scan.nextLine().toUpperCase(); //pega input do user e coloca ele como uppercase
       System.out.println("Seu movimento: " + inputUsuario);
      
       if (!Jogo.movimentosPossiveis.contains(inputUsuario)) { //caso o movimento nao esteja entre os permitidos
@@ -50,12 +56,9 @@ public class Jogo {
       int linhaWhitespace = this.Tabuleiro.posicaoWhiteSpace[0]; //posicao do whiteSpace
       int colunaWhitespace = this.Tabuleiro.posicaoWhiteSpace[1];
      
-      int novaColuna;
-      int novaLinha;
       switch (movimento) { //switch no movimento
         
          case "U": 
-
 
             if((!this.Tabuleiro.trocaPosicoes(linhaWhitespace,colunaWhitespace,linhaWhitespace+1,colunaWhitespace))){
                System.out.println("Não é possivel subir");

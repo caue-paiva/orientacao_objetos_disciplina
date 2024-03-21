@@ -110,7 +110,7 @@ public class Tabuleiro {
         return true;
     }
 
-    public void printTabuleiro(){
+    public void printTabuleiro(){ //imprime o tabuleiro e seus números na tela
         for (int i = 0; i < this.tamanho; i++) {
             System.out.print("+---");
         }
