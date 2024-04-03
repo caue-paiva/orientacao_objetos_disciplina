@@ -2,7 +2,7 @@ import random , math
 
 class Tabuleiro:
 
-   WHITE_SPACE = 0
+   WHITE_SPACE = 0 #constante de classe para representar o whitespace
 
    tabuleiro: list[list[int]]
    posicao_white_space: tuple[int]
@@ -15,7 +15,6 @@ class Tabuleiro:
          self.__criar_tabuleiro_tam(tamanho_ou_lista)
       elif isinstance(tamanho_ou_lista, list): #se ele for uma lista de numeros
          tamanho_lista:int = len(tamanho_ou_lista)
-         print(tamanho_lista)
          self.tamanho = int(math.sqrt(tamanho_lista))
          self.__preenche_tabuleiro_lista(tamanho_ou_lista)
       

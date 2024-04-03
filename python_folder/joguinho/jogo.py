@@ -1,9 +1,9 @@
 from tabuleiro import Tabuleiro
-import math
+import math 
 
 class Jogo:
 
-   MOVIMENTOS_POSSIVEIS = "UDLR"
+   MOVIMENTOS_POSSIVEIS = "UDLR" #constante de classe para os movimentos
 
    tamanho_tabul:int
    tabuleiro: Tabuleiro
@@ -17,7 +17,6 @@ class Jogo:
          len_lista:int = len(tamanho_ou_lista)
          self.tamanho_tabul = int(math.sqrt(len_lista))
          self.tabuleiro = Tabuleiro(tamanho_ou_lista) #cria tabuleiro com uma lista de argumento do constructor
-      print(self.tamanho_tabul)
 
    def jogar(self)->None:
       print("Vamos comecar o jogo!!")
@@ -51,7 +50,6 @@ class Jogo:
    def __user_input(self)->str:
       movimento:str = input("Qual o proximo movimento? U/D/L/R ?: ").upper()
       if movimento not in self.MOVIMENTOS_POSSIVEIS:
-         print("Movimento invalido")
          return ""
       return movimento
    
@@ -70,13 +68,3 @@ class Jogo:
          case "L":
             self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace,coluna_whitespace+1)
             
-             
-numeros_str:str = input() #le numeros da tela como string
-numeros_str = numeros_str.replace(" ","") #tira os espaços da string
-lista_numeros:list[int] = [int(x) for x in numeros_str] #transforma chars de numeros em inteiros
-
-comandos:str = input() #le comandos da tela
-
-
-jogo1 = Jogo(lista_numeros) #instancia um jogo com a lista de números
-jogo1.entra_comandos(comandos) #roda os comandos e ve se o estado final está certo
