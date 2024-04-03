@@ -2,7 +2,7 @@ import random
 
 class Tabuleiro:
 
-   WHITE_SPACE = -1
+   WHITE_SPACE = 0
 
    tabuleiro: list[list[int]]
    posicao_white_space: dict[str,int]
@@ -31,10 +31,7 @@ class Tabuleiro:
             for j in range(self.tamanho):
                print("|", end="")
                val = self.tabuleiro[i][j]
-               if val == self.WHITE_SPACE:
-                  print("   ", end="")
-               else:
-                  print(f"{val:3d}", end="")
+               print(f"{val:3d}", end="")
             
             print("|")
          

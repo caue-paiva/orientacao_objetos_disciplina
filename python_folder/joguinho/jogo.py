@@ -37,23 +37,18 @@ class Jogo:
    def __realizar_movimento(self,movimento:str)->None:
       linha_whitespace:int = self.tabuleiro.posicao_white_space[0]
       coluna_whitespace:int = self.tabuleiro.posicao_white_space[1]
-      print(f"linha {linha_whitespace} , coluna {coluna_whitespace}")
+      #print(f"linha {linha_whitespace} , coluna {coluna_whitespace}")
 
       match(movimento):
          case "U":
-            if not self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace-1,coluna_whitespace):
-               print("Movimento invalido")
-         
+           self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace+1,coluna_whitespace)
          case "D":
-            if not self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace+1,coluna_whitespace):
-               print("Movimento invalido")
-            
+            self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace-1,coluna_whitespace)
          case "R":
-            if not self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace,coluna_whitespace+1):
-               print("Movimento invalido")
+            self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace,coluna_whitespace-1)
          case "L":
-            if not self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace,coluna_whitespace-1):
-               print("Movimento invalido")
+            self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace,coluna_whitespace+1)
+            
              
 
 

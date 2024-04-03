@@ -9,9 +9,12 @@ public class Jogo {
 
    public static void main(String[] args) {
       Scanner scan2 = new Scanner(System.in);
-      String linhaNum = scan2.nextLine();
-      String[] partesLinhaNum = linhaNum.split(" ");
+
+      //codigo do runcodes
+      //String linhaNum = scan2.nextLine(); 
+     // String[] partesLinhaNum = linhaNum.split(" ");
         
+      /* 
       int[] numeros = new int[partesLinhaNum.length];
         
       for (int i = 0; i < partesLinhaNum.length; i++) {
@@ -34,13 +37,15 @@ public class Jogo {
       
       
       scan2.close();
+      */
       
-      /*Jogo jogo = new Jogo(2); //construtor apenas com tamanho do tabuleiro
-     
-      while(!jogo.Tabuleiro.estadoVitoria()){  //joga o jogo até o estado da vitória
+      //jogar no terminal
+      Jogo jogo = new Jogo(3); //construtor apenas com tamanho do tabuleiro
+      jogo.tabulei.printTabuleiro();
+      while(!jogo.tabulei.estadoVitoria()){  //joga o jogo até o estado da vitória
          jogo.jogar();
       }
-      jogo.Tabuleiro.printTabuleiro();
+      jogo.tabulei.printTabuleiro();
       System.out.println("Parabens, você venceu !!"); //msg de vitória
       scan.close(); //fecha o scanner*/
    }
