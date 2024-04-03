@@ -1,18 +1,27 @@
-import random
+import random , math
 
 class Tabuleiro:
 
    WHITE_SPACE = 0
 
    tabuleiro: list[list[int]]
-   posicao_white_space: dict[str,int]
+   posicao_white_space: tuple[int]
    tamanho: int
 
-   def __init__(self, tamanho:int) -> None:
-      self.tamanho = tamanho
-      self.__criar_tabuleiro(tamanho)
-
-   def __criar_tabuleiro(self,tamanho:int)-> None:     
+   def __init__(self, tamanho_ou_lista:int |list[int]) -> None:
+      #overloading the constructors no python pode ser implementado checando o tipo do argumento
+      if isinstance(tamanho_ou_lista,int): # se ele for um inteiro (tamanho do tabuleiro)      
+         self.tamanho = tamanho_ou_lista 
+         self.__criar_tabuleiro_tam(tamanho_ou_lista)
+      elif isinstance(tamanho_ou_lista, list): #se ele for uma lista de numeros
+         tamanho_lista:int = len(tamanho_ou_lista)
+         print(tamanho_lista)
+         self.tamanho = int(math.sqrt(tamanho_lista))
+         self.__preenche_tabuleiro_lista(tamanho_ou_lista)
+      
+      
+         
+   def __criar_tabuleiro_tam(self,tamanho:int)-> None:     
       lista_num: list[int] = [i for i in range(tamanho*tamanho)] #cria a lista de numeros de 0 até n-1
       random.shuffle(lista_num) #embaralha os items da lista
       index_whitespace:int = lista_num.index(0) #acha o index de 0
@@ -20,9 +29,20 @@ class Tabuleiro:
       
       #dividir a posicao no array do index do -1 pelo tamanho do array vai dar a linha do whitespace
       #fazer o mod da posicao no array do index do -1 pelo tamanho do array vai dar a coluna do whitespace
-      self.posicao_white_space= [int(index_whitespace/self.tamanho) ,  index_whitespace%self.tamanho]
+      self.posicao_white_space= (int(index_whitespace/self.tamanho) ,  index_whitespace%self.tamanho)
      
       self.tabuleiro = [ lista_num[(i*self.tamanho) : (i*self.tamanho) + self.tamanho]  for i in range(tamanho)   ] #lista comprehension num slice do vetor para gerar o tabuleiro
+
+   def __preenche_tabuleiro_lista(self,list_numeros:int)->None:
+      self.tabuleiro = [[0] * self.tamanho for _ in range(self.tamanho)]
+      index_atual_list: int = 0
+      for i in range(self.tamanho):
+         for j in range(self.tamanho):
+            numero_atual: int  = list_numeros[index_atual_list]
+            self.tabuleiro[i][j] = numero_atual
+            index_atual_list += 1
+            if numero_atual == self.WHITE_SPACE:
+               self.posicao_white_space = (i,j)
 
    def print_tabuleiro(self)->None:
       for i in range(self.tamanho):
@@ -58,9 +78,9 @@ class Tabuleiro:
       self.tabuleiro[i1][j1] = self.tabuleiro[i2][j2] 
       self.tabuleiro[i2][j2]  = tmp
 
-      if   [i1,j1] == self.posicao_white_space:
-           self.posicao_white_space = [i2,j2]
-      elif [i2,j2] == self.posicao_white_space:
-           self.posicao_white_space = [i1,j1]
+      if  (i1,j1) == self.posicao_white_space:
+           self.posicao_white_space = (i2,j2)
+      elif (i2,j2) == self.posicao_white_space:
+           self.posicao_white_space = (i1,j1)
 
       return True
