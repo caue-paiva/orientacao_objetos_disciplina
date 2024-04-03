@@ -9,7 +9,7 @@ class Jogo:
    tabuleiro: Tabuleiro
 
    def __init__(self, tamanho_ou_lista:int|list[int]) -> None:
-       #overloading the constructors no python pode ser implementado checando o tipo do argumento
+      #overloading the constructors no python pode ser implementado checando o tipo do argumento
       if isinstance(tamanho_ou_lista,int): # se ele for um inteiro (tamanho do tabuleiro)    
          self.tamanho_tabul = tamanho_ou_lista 
          self.tabuleiro = Tabuleiro(tamanho_ou_lista) #cria tabuleiro com apenas o tamanho de argumento do constructor
@@ -24,8 +24,22 @@ class Jogo:
 
       while(not self.tabuleiro.condicao_vitoria()):
           self.__rodada()
-      
       print("Parabéns, voce venceu")
+   
+   def entra_comandos(self,comandos:str)->None:
+      comandos:str = comandos.upper() #coloca os comandos em UPPERCASE
+      self.tabuleiro.print_tabuleiro()
+      print()
+      for comando in comandos:
+         self.__realizar_movimento(comando)
+         self.tabuleiro.print_tabuleiro()
+         print()
+      
+      if self.tabuleiro.condicao_vitoria():
+         print("Posicao final: True")
+      else:
+         print("Posicao final: False")
+      
    
    def __rodada(self)->None:
       self.tabuleiro.print_tabuleiro()
@@ -57,8 +71,12 @@ class Jogo:
             self.tabuleiro.troca_posicoes(linha_whitespace,coluna_whitespace,linha_whitespace,coluna_whitespace+1)
             
              
+numeros_str:str = input() #le numeros da tela como string
+numeros_str = numeros_str.replace(" ","") #tira os espaços da string
+lista_numeros:list[int] = [int(x) for x in numeros_str] #transforma chars de numeros em inteiros
+
+comandos:str = input() #le comandos da tela
 
 
-jogo1 = Jogo([1 ,4 ,15, 14 ,10 ,2 ,12, 3, 0, 5, 8, 6, 9, 7, 11, 13])
-
-jogo1.jogar()
+jogo1 = Jogo(lista_numeros) #instancia um jogo com a lista de números
+jogo1.entra_comandos(comandos) #roda os comandos e ve se o estado final está certo

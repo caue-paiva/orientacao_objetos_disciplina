@@ -46,16 +46,21 @@ class Tabuleiro:
 
    def print_tabuleiro(self)->None:
       for i in range(self.tamanho):
-            print("+---" * self.tamanho + "+")
-            
-            for j in range(self.tamanho):
-               print("|", end="")
-               val = self.tabuleiro[i][j]
-               print(f"{val:3d}", end="")
-            
-            print("|")
-         
-      print("+---" * self.tamanho + "+")
+        print("+------" * self.tamanho + "+")
+        
+        for j in range(self.tamanho):
+            val = self.tabuleiro[i][j]
+            if val == self.WHITE_SPACE:
+                print("|      " , end="")
+            else:
+                if val >= 10:
+                    print("|  %d  " % val, end="")
+                else:
+                    print("|   %d  " % val, end="")
+        
+        print("|")
+    
+      print("+------" * self.tamanho + "+")
 
    def condicao_vitoria(self)->bool:
       if self.tabuleiro[0][0] != self.WHITE_SPACE:
@@ -69,6 +74,7 @@ class Tabuleiro:
              if self.tabuleiro[i][j] != cur_value:
                 return False
              cur_value+=1
+      return True
          
    def troca_posicoes(self, i1:int, j1:int, i2:int, j2:int)->bool:
       if any(x < 0 for x in[i1, j1, i2, j2]) or any(x >= self.tamanho for x in [i1, j1, i2, j2]):     
