@@ -14,14 +14,18 @@ public class AVL extends ArvoreBin {
    public static void main(String[] args) {
       AVL avl = new AVL(50);
 
-      avl.Insert("ccc");
-      avl.Insert("ddd");
-      avl.Insert("eee");
-      avl.Insert("bbb");
-      avl.Insert("abaa");
-      avl.Insert("aaa");
+      avl.Insert("f");
+      avl.Insert("b");
+      avl.Insert("c");
+      avl.Insert("d");
+      avl.Insert("a");
+      avl.Insert("g");
+     // avl.Insert("abaa");
+     // avl.Insert("aaa");
       
-      avl.__MakeRotation(1);
+      System.out.println(avl.toString());
+      avl.__MakeRotation(0);
+      System.out.println();
       System.out.println(avl.toString());
    }
 
