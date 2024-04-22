@@ -13,18 +13,23 @@ public class AVL extends ArvoreBin {
    public static void main(String[] args) {
       AVL avl = new AVL(50);
 
-      avl.Insert("f");
       avl.Insert("b");
-      avl.Insert("c");
-      avl.Insert("d");
       avl.Insert("a");
-      avl.Insert("g");
+
+      // System.out.println(avl.toString());
+     avl.Insert("c");
+
+      avl.Insert("d");
+      avl.Insert("e");
+
+     // System.out.println(avl.toString());
+
+     // avl.Insert("d");
+     // avl.Insert("a");
+     // avl.Insert("g");
      // avl.Insert("abaa");
      // avl.Insert("aaa");
-      
-      System.out.println(avl.toString());
-      avl.__MakeRotation(0);
-      System.out.println();
+     // avl.PrintTree();
       System.out.println(avl.toString());
    }
 
@@ -45,14 +50,9 @@ public class AVL extends ArvoreBin {
       int indexToInsert = this._FindIndex(0, value);
       this.nodeList[indexToInsert] = value; //insere o valor no indice
       this.nodeNumber++; //aumenta número de nos
-
-      int fatherInsertedNode = (indexToInsert-1)/2; //pega o pai do no inserido
-
-      if(!this.__NodeIsBalanced(fatherInsertedNode)){ //se o pai na eesta balanceado
-         System.out.println("precisa balancear na inserção");
-         this.__MakeRotation(fatherInsertedNode); //faz o balanceamento
-      }
-      // o __MakeRotation já acha o último do index no seu final 
+      this.__FindLastNodeIndex(); //atualiza o index do ultimo
+      this.__CheckNodeListBalance(); //ve se a arvore precisa de balanceamento
+      
       return true;
    }
 
@@ -106,6 +106,7 @@ public class AVL extends ArvoreBin {
          } else {
              //rotação ESQ-DIR
              this.__RotationLogic(__LeftChild(index), false); //rotação ESQ-ESQ no filho esquerdo do desbalanceado
+             this.__FindLastNodeIndex(); //acha o novo ultimo nó da arvore entre as rotações
              this.__RotationLogic(index, true); //rotação DIR-DIR no nó desbalanceado
          }
 
@@ -113,9 +114,11 @@ public class AVL extends ArvoreBin {
          int rightChildBalancing = this.__GetBalancing(__RightChild(index));
 
          if (rightChildBalancing < 0 ){ //pai e filho tem o mesmo sinal no balanceamento, rotação ESQ-ESQ simples
+            System.out.println("ESQ-ESQ");
             this.__RotationLogic(index, false);  
          } else {
             this.__RotationLogic(__RightChild(index), true); //rotação DIR_DIR no filho direito do desbalanceado
+            this.__FindLastNodeIndex(); //acha o novo ultimo nó da arvore entre as rotações
             this.__RotationLogic(index, false); //rotação ESQ-ESQ no nó desbalanceado
          }
       }
@@ -133,17 +136,20 @@ public class AVL extends ArvoreBin {
 
       balancedPart.InsertList(restOfTreeList); //insera todos os nós da avl menos o da subarvore balanceada
       
-      if (rightRotation)
+      if (rightRotation){
          rotatePart.Insert(UnbalancedSubTreeNodes.get(1)); //coloca o filho esquerdo da raiz como nova raiz (rotação DIR_DIR) da sub-arvore desbalanceada
-      else 
-         rotatePart.Insert(UnbalancedSubTreeNodes.get(2));//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
-      
+      }else {
+         if (UnbalancedSubTreeNodes.size() > 2)
+            rotatePart.Insert(UnbalancedSubTreeNodes.get(2));//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
+         else 
+            rotatePart.Insert(UnbalancedSubTreeNodes.get(1));//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
+      }
       rotatePart.Insert(UnbalancedSubTreeNodes.get(0)); //coloca o nó raiz da sub-arvore desbalanceada
       rotatePart.InsertList(UnbalancedSubTreeNodes); //coloca o resto dos nós desbalanceados, os já adicionados não serão colocados dnv, ja que tem um check no método .Insert()
 
       finalBalancedTree.InsertList(balancedPart.ListOfNodes());
       finalBalancedTree.InsertList(rotatePart.ListOfNodes());
-
+   
       this.__CopyNodeList(finalBalancedTree.nodeList);
    }
 
@@ -190,6 +196,19 @@ public class AVL extends ArvoreBin {
             }
       }
       return returnList;
+   }
+
+   //retorna true se uma rotação foi feita e false senão
+   private boolean __CheckNodeListBalance() {
+         for (int i = this.lastNodeIndex; i >= 0; i--) {
+            if (!this.__NodeIsBalanced(i)){
+               System.out.println("rotação no " + i);
+                this.__MakeRotation(i);
+                return true;
+            }
+         }
+
+         return false;
    }
 
 
