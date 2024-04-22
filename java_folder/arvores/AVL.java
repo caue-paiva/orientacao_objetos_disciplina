@@ -137,19 +137,18 @@ public class AVL extends ArvoreBin {
       balancedPart.InsertList(restOfTreeList); //insera todos os nós da avl menos o da subarvore balanceada
       
       if (rightRotation){
-         rotatePart.Insert(UnbalancedSubTreeNodes.get(1)); //coloca o filho esquerdo da raiz como nova raiz (rotação DIR_DIR) da sub-arvore desbalanceada
+         String leftSon = this.nodeList[this._NodeLeft(rootIndex)];
+         rotatePart.Insert(leftSon); //coloca o filho esquerdo da raiz como nova raiz (rotação DIR_DIR) da sub-arvore desbalanceada
       }else {
-         if (UnbalancedSubTreeNodes.size() > 2)
-            rotatePart.Insert(UnbalancedSubTreeNodes.get(2));//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
-         else 
-            rotatePart.Insert(UnbalancedSubTreeNodes.get(1));//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
+         String rightSon = this.nodeList[this._NodeRight(rootIndex)];
+         rotatePart.Insert(rightSon);//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
       }
       rotatePart.Insert(UnbalancedSubTreeNodes.get(0)); //coloca o nó raiz da sub-arvore desbalanceada
       rotatePart.InsertList(UnbalancedSubTreeNodes); //coloca o resto dos nós desbalanceados, os já adicionados não serão colocados dnv, ja que tem um check no método .Insert()
 
       finalBalancedTree.InsertList(balancedPart.ListOfNodes());
       finalBalancedTree.InsertList(rotatePart.ListOfNodes());
-   
+
       this.__CopyNodeList(finalBalancedTree.nodeList);
    }
 
