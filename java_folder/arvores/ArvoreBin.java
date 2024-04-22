@@ -42,7 +42,7 @@ public class ArvoreBin {
          return true;
       }
 
-      int indexToInsert = this.__InsertFindIndex(0, value);
+      int indexToInsert = this._FindIndex(0, value);
       //System.out.printf("index inserir %s é %d%n", value, indexToInsert);
 
       this.nodeList[indexToInsert] = value;
@@ -106,6 +106,7 @@ public class ArvoreBin {
       }
    }
 
+   @Override
    public String toString() {
       String treeStr = "";
 
@@ -134,21 +135,6 @@ public class ArvoreBin {
    }
 
    //MÉTODOS PRIVADOS
-
-   private int __InsertFindIndex(final int curIndex, final String value) { //acha o index certo da string para ser inserida
-      if (curIndex >= this.maxNodes)
-        throw new IndexOutOfBoundsException("Index fora do tam maximo do array: " + curIndex);
-      
-      String curNodeStr = this.nodeList[curIndex];
-      if (curNodeStr == null) //achou um lugar para inserir
-         return curIndex;
-      
-      if (value.compareTo(curNodeStr) < 0 ) { // string a ser inserida é menor que o pai, chama filho da esquerda
-         return this.__InsertFindIndex(__LeftChild(curIndex), value);
-      } else { // string a ser inserida é maior/igual que o pai, chama filho da direita
-         return this.__InsertFindIndex(__RightChild(curIndex), value);
-      }
-   }
 
    private void __RemoveChild(final int indexToRemove) {
       if (indexToRemove > this.lastNodeIndex)
@@ -191,6 +177,22 @@ public class ArvoreBin {
 
    //MÉTODOS PROTEGIDOS  
    //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
+
+   protected int _FindIndex(final int curIndex, final String value) { //acha o index certo da string para ser inserida
+      if (curIndex >= this.maxNodes)
+        throw new IndexOutOfBoundsException("Index fora do tam maximo do array: " + curIndex);
+      
+      String curNodeStr = this.nodeList[curIndex];
+      if (curNodeStr == null) //achou um lugar para inserir
+         return curIndex;
+      
+      if (value.compareTo(curNodeStr) < 0 ) { // string a ser inserida é menor que o pai, chama filho da esquerda
+         return this._FindIndex(__LeftChild(curIndex), value);
+      } else { // string a ser inserida é maior/igual que o pai, chama filho da direita
+         return this._FindIndex(__RightChild(curIndex), value);
+      }
+   }
+
 
    protected String _GetNode(final int i) {
      if (i >= this.maxNodes) 

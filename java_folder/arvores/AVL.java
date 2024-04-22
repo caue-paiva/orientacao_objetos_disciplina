@@ -10,7 +10,6 @@ public class AVL extends ArvoreBin {
    private static final int maxBalancingFactor = 1;
 
 
-
    public static void main(String[] args) {
       AVL avl = new AVL(50);
 
@@ -33,6 +32,30 @@ public class AVL extends ArvoreBin {
       super(len);
    }
 
+   @Override
+   public boolean Insert(String value){
+      if (this.nodeNumber >= this.maxNodes){ //caso o numero de nos seja maior ou igual ao máximo de nos
+         return false;
+      }
+
+      if(this.Find(value)){ //caso o valor ja exista, vamos retornar true ja que não tem nenhum erro mas não vamos inserir
+         return true;
+      }
+
+      int indexToInsert = this._FindIndex(0, value);
+      this.nodeList[indexToInsert] = value; //insere o valor no indice
+      this.nodeNumber++; //aumenta número de nos
+
+      int fatherInsertedNode = (indexToInsert-1)/2; //pega o pai do no inserido
+
+      if(!this.__NodeIsBalanced(fatherInsertedNode)){ //se o pai na eesta balanceado
+         System.out.println("precisa balancear na inserção");
+         this.__MakeRotation(fatherInsertedNode); //faz o balanceamento
+      }
+      // o __MakeRotation já acha o último do index no seu final 
+      return true;
+   }
+
    private boolean __NodeIsBalanced(int index){
       int balancingFactor = this.__GetBalancing(index);
       
@@ -47,12 +70,9 @@ public class AVL extends ArvoreBin {
          System.out.println("WARNING: Acessando a altura de um nó que não existe " + index + " retornando altura 0");
          return 0;
       }
-      //System.out.println("index entrando "+ index);
       int leftHeight =   this.__GetHeightRecu(__LeftChild(index));
-
       int rightHeight =  this.__GetHeightRecu(__RightChild(index));
-      //System.out.println("altura esq "+ leftHeight + " altura dir" + rightHeight);
-
+      
       return leftHeight - rightHeight;
    }
 
