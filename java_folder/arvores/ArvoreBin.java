@@ -1,6 +1,8 @@
 package java_folder.arvores;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class ArvoreBin {
 
@@ -9,13 +11,6 @@ public class ArvoreBin {
    public int maxNodes;
    public int nodeNumber;
 
-   protected static int __LeftChild (int index) {
-      return (index*2) +1;
-   }
-
-   protected static int __RightChild (int index) {
-      return (index*2) +2;
-   }
 
    public static void main(String[] args) {
       ArvoreBin arvo = new ArvoreBin(8);
@@ -66,12 +61,12 @@ public class ArvoreBin {
       for (int i = 0; i <= this.lastNodeIndex; i++) {
          if (this.nodeList[i] == value) {
                this.nodeList[i] = null;
-               this.__RemoveChild(__LeftChild(i));
-               this.__RemoveChild(__RightChild(i));
+               this._RemoveChild(_LeftChild(i));
+               this._RemoveChild(_RightChild(i));
                break;
          }
       }
-      this.__FindLastNodeIndex();
+      this._FindLastNodeIndex();
       this.nodeNumber--;
       return true;
    }
@@ -84,7 +79,7 @@ public class ArvoreBin {
       return this.__FindRecursive(0, value);
    }
 
-   //retorna uma lista de nós em ordem baseado no array da AB, não tem a indexação direta de pais e filhos
+   //retorna uma lista de nós em ordem baseado no array da AB, não tem a indexação direta (2*i +1 ou +2) de pais e filhos
    public List<String> ListOfNodes(){
       List<String> returnList = new ArrayList<>();
       for (int i = 0; i < this.maxNodes; i++) {
@@ -111,8 +106,8 @@ public class ArvoreBin {
       String treeStr = "";
 
       for (int i = 0; i <= this.lastNodeIndex; i++) {
-            int leftChildIndex = __LeftChild(i);
-            int rightChildIndex = __RightChild(i);
+            int leftChildIndex = _LeftChild(i);
+            int rightChildIndex = _RightChild(i);
             String curStr = this.nodeList[i];
             if (curStr == null)
                continue;
@@ -148,14 +143,18 @@ public class ArvoreBin {
          return true;
       
       if (value.compareTo(curNodeStr) < 0 ) { // string a ser inserida é menor que o pai, chama filho da esquerda
-         return this.__FindRecursive(__LeftChild(curIndex), value);
+         return this.__FindRecursive(_LeftChild(curIndex), value);
       } else { // string a ser inserida é maior/igual que o pai, chama filho da direita
-         return this.__FindRecursive(__RightChild(curIndex), value);
+         return this.__FindRecursive(_RightChild(curIndex), value);
       }
 }
 
+
+   //MÉTODOS PROTEGIDOS  
+   //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
+
    //apos certas operações é necessário achar de novo qual o ultimo no da árvore
-   protected void __FindLastNodeIndex() {
+   protected void _FindLastNodeIndex() {
          for (int i = this.maxNodes-1; i >= 0; i--) { 
              if (this.nodeList[i] != null){
                   this.lastNodeIndex = i;
@@ -165,17 +164,69 @@ public class ArvoreBin {
          this.lastNodeIndex = -1; //não achamos nenhum valor diferente de null na lista, então ela esta vazia
    }
 
-   //MÉTODOS PROTEGIDOS  
-   //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
+   protected static int _LeftChild (int index) {
+      return (index*2) +1;
+   }
 
-   protected void __RemoveChild(final int indexToRemove) {
+   protected static int _RightChild (int index) {
+      return (index*2) +2;
+   }
+
+   //realiza uma DFS e retorna uma lista de nos da sub-arvore, essa lista tem a mesma ordenação dos nós no vetor que representa a árvore
+   protected List<String> _GetSubtreeVals(int rootIndex){
+      if (rootIndex > this.lastNodeIndex) {
+         return new ArrayList<>(); // Retorna uma lista vazia se o index da raiz for maior que o ultimo no
+      }
+   
+      List<String> values = new ArrayList<>(); //lista para guardar os valores da string em ordem
+      Queue<Integer> queue = new LinkedList<>();//fila para percorre o index de nós
+      
+      queue.offer(rootIndex); //adiciona o nó raiz na fila
+
+      while (!queue.isEmpty()){
+         
+         int currentIndex = queue.poll(); //tira o index atual da fila
+         values.add(this.nodeList[currentIndex]); //adiciona valor atual na lista de valores
+
+         int leftIndex = _LeftChild(currentIndex);
+         int rightIndex = _RightChild(currentIndex);
+
+         if (leftIndex <= lastNodeIndex && this.nodeList[leftIndex] != null) {
+             queue.offer(leftIndex);
+         }
+         if (rightIndex <= lastNodeIndex && this.nodeList[rightIndex] != null) {
+             queue.offer(rightIndex);
+         }
+      }
+
+      return values;
+   }
+
+
+   //copia o array de nós da AVL mas excluindo certos valores de uma lista passada como parametro
+   protected List<String> __CopyArrayExcluding(List<String> exclusionList){
+      List<String>  returnList = new ArrayList<>();
+         
+      for (int i = 0; i < this.maxNodes; i++) {
+            String curVal = this.nodeList[i];
+            if (curVal == null)
+               continue;
+            if (!exclusionList.contains(curVal)){ //valor não esta na lista de exclusão
+                returnList.add(curVal);  
+            }
+      }
+      return returnList;
+   }
+
+
+   protected void _RemoveChild(final int indexToRemove) {
       if (indexToRemove > this.lastNodeIndex)
          return;
 
       this.nodeList[indexToRemove] = null;
       this.nodeNumber--;
-      this.__RemoveChild(__LeftChild(indexToRemove));
-      this.__RemoveChild(__RightChild(indexToRemove));
+      this._RemoveChild(_LeftChild(indexToRemove));
+      this._RemoveChild(_RightChild(indexToRemove));
    }
 
    protected int _FindIndex(final int curIndex, final String value) { //acha o index certo da string para ser inserida
@@ -187,9 +238,9 @@ public class ArvoreBin {
          return curIndex;
       
       if (value.compareTo(curNodeStr) < 0 ) { // string a ser inserida é menor que o pai, chama filho da esquerda
-         return this._FindIndex(__LeftChild(curIndex), value);
+         return this._FindIndex(_LeftChild(curIndex), value);
       } else { // string a ser inserida é maior/igual que o pai, chama filho da direita
-         return this._FindIndex(__RightChild(curIndex), value);
+         return this._FindIndex(_RightChild(curIndex), value);
       }
    }
 
@@ -212,7 +263,7 @@ public class ArvoreBin {
       if (i > this.lastNodeIndex)
          return 0; //caso base da recursão 
 
-      return 1 + this._CountNodes(__LeftChild(i)) + this._CountNodes(__RightChild(i));
+      return 1 + this._CountNodes(_LeftChild(i)) + this._CountNodes(_RightChild(i));
 
    }
 
@@ -220,7 +271,7 @@ public class ArvoreBin {
       if (i > this.lastNodeIndex)
          return -1;
 
-      int rightChildIndex = __RightChild(i);
+      int rightChildIndex = _RightChild(i);
       if (rightChildIndex > this.lastNodeIndex)
           return -1;
       else
@@ -231,7 +282,7 @@ public class ArvoreBin {
       if (i > this.lastNodeIndex)
          return -1;
 
-      int leftChildIndex = __LeftChild(i);
+      int leftChildIndex = _LeftChild(i);
       if (leftChildIndex > this.lastNodeIndex)
           return -1;
       else

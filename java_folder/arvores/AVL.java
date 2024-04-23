@@ -1,9 +1,6 @@
 package java_folder.arvores;
-
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class AVL extends ArvoreBin {
 
@@ -59,7 +56,7 @@ public class AVL extends ArvoreBin {
       int indexToInsert = this._FindIndex(0, value);
       this.nodeList[indexToInsert] = value; //insere o valor no indice
       this.nodeNumber++; //aumenta número de nos
-      this.__FindLastNodeIndex(); //atualiza o index do ultimo
+      this._FindLastNodeIndex(); //atualiza o index do ultimo
       this.__CheckNodeListBalance(); //ve se a arvore precisa de balanceamento
       
       return true;
@@ -70,12 +67,12 @@ public class AVL extends ArvoreBin {
       for (int i = 0; i <= this.lastNodeIndex; i++) {
          if (this.nodeList[i] == value) {
                this.nodeList[i] = null; //remove o nó
-               this.__RemoveChild(__LeftChild(i)); //remove seus filhos
-               this.__RemoveChild(__RightChild(i));
+               this._RemoveChild(_LeftChild(i)); //remove seus filhos
+               this._RemoveChild(_RightChild(i));
                break;
          }
       }
-      this.__FindLastNodeIndex(); //atualiza index do ultimo nó
+      this._FindLastNodeIndex(); //atualiza index do ultimo nó
       this.nodeNumber--;
       this.__CheckNodeListBalance(); //realiza operações de balanceamento caso seja necessário
       return true;
@@ -95,8 +92,8 @@ public class AVL extends ArvoreBin {
          System.out.println("WARNING: Acessando a altura de um nó que não existe " + index + " retornando altura 0");
          return 0;
       }
-      int leftHeight =   this.__GetHeightRecu(__LeftChild(index));
-      int rightHeight =  this.__GetHeightRecu(__RightChild(index));
+      int leftHeight =   this.__GetHeightRecu(_LeftChild(index));
+      int rightHeight =  this.__GetHeightRecu(_RightChild(index));
       
       return leftHeight - rightHeight;
    }
@@ -124,35 +121,35 @@ public class AVL extends ArvoreBin {
       //System.out.println("fator balan" + rootBalancingFactor);
 
       if (rootBalancingFactor > 0 ){ //valor positivo, ta pendendo pra esquerda
-         int leftChildBalancing =  this.__GetBalancing(__LeftChild(index));
+         int leftChildBalancing =  this.__GetBalancing(_LeftChild(index));
          
          if (leftChildBalancing > 0){ //pai e filho tem o mesmo sinal no balanceamento, rotação DIR-DIR simples
             this.__RotationLogic(index, true);
          } else {
              //rotação ESQ-DIR
-             this.__RotationLogic(__LeftChild(index), false); //rotação ESQ-ESQ no filho esquerdo do desbalanceado
-             this.__FindLastNodeIndex(); //acha o novo ultimo nó da arvore entre as rotações
+             this.__RotationLogic(_LeftChild(index), false); //rotação ESQ-ESQ no filho esquerdo do desbalanceado
+             this._FindLastNodeIndex(); //acha o novo ultimo nó da arvore entre as rotações
              this.__RotationLogic(index, true); //rotação DIR-DIR no nó desbalanceado
          }
 
       } else { //Valor negativo, ta pendendo pra direita
-         int rightChildBalancing = this.__GetBalancing(__RightChild(index));
+         int rightChildBalancing = this.__GetBalancing(_RightChild(index));
 
          if (rightChildBalancing < 0 ){ //pai e filho tem o mesmo sinal no balanceamento, rotação ESQ-ESQ simples
             System.out.println("ESQ-ESQ");
             this.__RotationLogic(index, false);  
          } else {
-            this.__RotationLogic(__RightChild(index), true); //rotação DIR_DIR no filho direito do desbalanceado
-            this.__FindLastNodeIndex(); //acha o novo ultimo nó da arvore entre as rotações
+            this.__RotationLogic(_RightChild(index), true); //rotação DIR_DIR no filho direito do desbalanceado
+            this._FindLastNodeIndex(); //acha o novo ultimo nó da arvore entre as rotações
             this.__RotationLogic(index, false); //rotação ESQ-ESQ no nó desbalanceado
          }
       }
 
-      this.__FindLastNodeIndex(); //acha o novo ultimo nó da arvore
+      this._FindLastNodeIndex(); //acha o novo ultimo nó da arvore
    }
 
    private void __RotationLogic(int rootIndex, boolean rightRotation) {
-      List<String> UnbalancedSubTreeNodes = this.__GetSubtreeVals(rootIndex);
+      List<String> UnbalancedSubTreeNodes = this._GetSubtreeVals(rootIndex);
       List<String> restOfTreeList = this.__CopyArrayExcluding(UnbalancedSubTreeNodes);
 
       ArvoreBin balancedPart = new ArvoreBin(this.maxNodes);
@@ -175,51 +172,6 @@ public class AVL extends ArvoreBin {
       finalBalancedTree.InsertList(rotatePart.ListOfNodes());
 
       this.__CopyNodeList(finalBalancedTree.nodeList);
-   }
-
-   private List<String> __GetSubtreeVals(int rootIndex){
-      if (rootIndex > this.lastNodeIndex) {
-         return new ArrayList<>(); // Retorna uma lista vazia se o index da raiz for maior que o ultimo no
-      }
-   
-      List<String> values = new ArrayList<>(); //lista para guardar os valores da string em ordem
-      Queue<Integer> queue = new LinkedList<>();//fila para percorre o index de nós
-      
-      queue.offer(rootIndex); //adiciona o nó raiz na fila
-
-      while (!queue.isEmpty()){
-         
-         int currentIndex = queue.poll(); //tira o index atual da fila
-         values.add(this.nodeList[currentIndex]); //adiciona valor atual na lista de valores
-
-         int leftIndex = __LeftChild(currentIndex);
-         int rightIndex = __RightChild(currentIndex);
-
-         if (leftIndex <= lastNodeIndex && this.nodeList[leftIndex] != null) {
-             queue.offer(leftIndex);
-         }
-         if (rightIndex <= lastNodeIndex && this.nodeList[rightIndex] != null) {
-             queue.offer(rightIndex);
-         }
-      }
-
-      return values;
-   
-   }
-
-   //copia o array de nós da AVL mas excluindo certos valores de uma lista passada como parametro
-   private List<String> __CopyArrayExcluding(List<String> exclusionList){
-      List<String>  returnList = new ArrayList<>();
-         
-      for (int i = 0; i < this.maxNodes; i++) {
-            String curVal = this.nodeList[i];
-            if (curVal == null)
-               continue;
-            if (!exclusionList.contains(curVal)){ //valor não esta na lista de exclusão
-                returnList.add(curVal);  
-            }
-      }
-      return returnList;
    }
 
    //retorna true se uma rotação foi feita e false senão
