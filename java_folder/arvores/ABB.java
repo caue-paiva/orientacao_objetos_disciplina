@@ -5,22 +5,16 @@ import java.util.Collections;
 
 public class ABB extends ArvoreBin{
 
-   private final int maxBalancingFactor = 1;
+   private static final int maxBalancingFactor = 1;
 
    public static void main(String[] args) {
       ABB arv = new ABB(20);
 
-      arv.Insert("b");
-      arv.Insert("aa");
-      arv.Insert("d");
-      arv.Insert("a");
- 
-      arv.Insert("c");
-      arv.Insert("f");
-      arv.Remove("a");
-  
-
-      
+      List<String> vals = new ArrayList<>(List.of("d", "b", "f", "e","c","a"));
+      arv.InsertList(vals);
+      arv.Remove("e");
+     
+      System.out.println(arv.nodeNumber);      
       System.out.println(arv.toString());
 
    }
@@ -31,36 +25,15 @@ public class ABB extends ArvoreBin{
 
    @Override
    public boolean Insert(String value){
-      if (this.nodeNumber >= this.maxNodes){ //caso o numero de nos seja maior ou igual ao máximo de nos
-         return false;
-      }
-
-      if(this.Find(value)){ //caso o valor ja exista, vamos retornar true ja que não tem nenhum erro mas não vamos inserir
-         return true;
-      }
-
-      int indexToInsert = this._FindIndex(0, value);
-      this.nodeList[indexToInsert] = value; //insere o valor no indice
-      this.nodeNumber++; //aumenta número de nos
-      this._FindLastNodeIndex(); //atualiza o index do ultimo
+      super.Insert(value);
       this.__CheckTreeBalancing(); //ve se a arvore precisa de balanceamento
       
       return true;
-
    }
 
    @Override
    public boolean Remove (String value){
-      for (int i = 0; i <= this.lastNodeIndex; i++) {
-         if (this.nodeList[i] == value) {
-               this.nodeList[i] = null; //remove o nó
-               this._RemoveChild(_LeftChild(i)); //remove seus filhos
-               this._RemoveChild(_RightChild(i));
-               break;
-         }
-      }
-      this._FindLastNodeIndex(); //atualiza index do ultimo nó
-      this.nodeNumber--;
+      super.Remove(value); //chama a funcionalidade de busca da classe parente
       this.__CheckTreeBalancing(); //realiza operações de balanceamento caso seja necessário
       return true;
    }
@@ -94,7 +67,7 @@ public class ABB extends ArvoreBin{
 
          int balanceFactor = this.__GetBalancing(index);
 
-         if (Math.abs(balanceFactor) <= this.maxBalancingFactor)
+         if (Math.abs(balanceFactor) <= maxBalancingFactor)
             return true;
          else
             return false;

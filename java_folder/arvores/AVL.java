@@ -3,39 +3,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AVL extends ArvoreBin {
-
+   
    private static final int maxBalancingFactor = 1;
-
 
    public static void main(String[] args) {
       AVL avl = new AVL(50);
 
 
-      // System.out.println(avl.toString());
+      List<String> vals = new ArrayList<>(List.of("b","a","c","d"));
+      avl.InsertList(vals);
+      avl.Remove("b");
     
-      avl.Insert("c");
-      avl.Insert("b");
-      avl.Insert("e");
-      avl.Insert("a");
-
-      avl.Insert("d");
-      avl.Insert("f");
-      avl.Insert("g");
-
-      avl.Remove("a");
-
-
-      //avl.Insert("d");
-      //avl.Insert("e");
-
-     // System.out.println(avl.toString());
-
-     // avl.Insert("d");
-     // avl.Insert("a");
-     // avl.Insert("g");
-     // avl.Insert("abaa");
-     // avl.Insert("aaa");
-     // avl.PrintTree();
       System.out.println(avl.toString());
    }
 
@@ -45,35 +23,14 @@ public class AVL extends ArvoreBin {
 
    @Override
    public boolean Insert(String value){
-      if (this.nodeNumber >= this.maxNodes){ //caso o numero de nos seja maior ou igual ao máximo de nos
-         return false;
-      }
-
-      if(this.Find(value)){ //caso o valor ja exista, vamos retornar true ja que não tem nenhum erro mas não vamos inserir
-         return true;
-      }
-
-      int indexToInsert = this._FindIndex(0, value);
-      this.nodeList[indexToInsert] = value; //insere o valor no indice
-      this.nodeNumber++; //aumenta número de nos
-      this._FindLastNodeIndex(); //atualiza o index do ultimo
+      super.Insert(value); //chama o método da classe pai
       this.__CheckNodeListBalance(); //ve se a arvore precisa de balanceamento
-      
       return true;
    }
 
    @Override
    public boolean Remove (String value){
-      for (int i = 0; i <= this.lastNodeIndex; i++) {
-         if (this.nodeList[i] == value) {
-               this.nodeList[i] = null; //remove o nó
-               this._RemoveChild(_LeftChild(i)); //remove seus filhos
-               this._RemoveChild(_RightChild(i));
-               break;
-         }
-      }
-      this._FindLastNodeIndex(); //atualiza index do ultimo nó
-      this.nodeNumber--;
+      super.Remove(value); //remoção igual ao metodo da classe pai
       this.__CheckNodeListBalance(); //realiza operações de balanceamento caso seja necessário
       return true;
    }
@@ -186,6 +143,5 @@ public class AVL extends ArvoreBin {
 
          return false;
    }
-
 
 }
