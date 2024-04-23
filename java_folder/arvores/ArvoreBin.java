@@ -136,8 +136,6 @@ public class ArvoreBin {
 
    //MÉTODOS PRIVADOS
 
-
-
    private boolean __FindRecursive(final int curIndex, final String value){
       if (curIndex >= this.maxNodes)
         return false;
