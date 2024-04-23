@@ -13,11 +13,15 @@ public class ArvoreBin {
 
 
    public static void main(String[] args) {
-      ArvoreBin arvo = new ArvoreBin(8);
+      ArvoreBin arvo = new ArvoreBin(10);
 
-      arvo.Insert("abaa");
-      arvo.Insert("bbb");
-      arvo.Insert("aaa");
+      arvo.Insert("a");
+      arvo.Insert("b");
+      arvo.Insert("c");
+     
+      arvo.Remove("a");
+
+      System.out.println(arvo.toString());
         
    }
 
@@ -60,9 +64,20 @@ public class ArvoreBin {
    public boolean Remove(final String value) {
       for (int i = 0; i <= this.lastNodeIndex; i++) {
          if (this.nodeList[i] == value) {
-               this.nodeList[i] = null;
-               this._RemoveChild(_LeftChild(i));
-               this._RemoveChild(_RightChild(i));
+               int rightmostChildIndex = this._FindRightmostChild(i);
+               
+               if (rightmostChildIndex == i){ //nó não tem filhos a direita
+                  int leftmostChildIndex = this._FindLeftmostChild(i); //acha  filho mais a esquerda
+                  if (leftmostChildIndex != i){ //tem filho a esquerda
+                     this.nodeList[i] = this.nodeList[leftmostChildIndex]; //troca valores
+                     this.nodeList[leftmostChildIndex] = null;
+                  } else { //n tem filho a esquerda ou dir
+                     this.nodeList[i] = null;
+                  }
+               } else {
+                  this.nodeList[i] = this.nodeList[rightmostChildIndex]; //troca valores
+                  this.nodeList[rightmostChildIndex] = null;
+               }
                break;
          }
       }
@@ -149,9 +164,77 @@ public class ArvoreBin {
       }
 }
 
+   private int __FindRightmostRecu(int curIndex, int lastIndex){
+      if (curIndex < this.maxNodes){
+         String val = this.nodeList[curIndex];
+         if (val == null){
+            return lastIndex; //retorna ultimo valor
+         }else{ 
+            return this.__FindRightmostRecu(_RightChild(curIndex), curIndex);
+         }
+      } else {
+         return lastIndex; //out of bounds, retorna ultimo valor
+      }
+   }
+
+   private int __FindLeftmostRecu(int curIndex, int lastIndex){
+      if (curIndex < this.maxNodes){
+         String val = this.nodeList[curIndex];
+         if (val == null)
+            return lastIndex; //retorna ultimo valor
+         else 
+            return this.__FindLeftmostRecu(_LeftChild(curIndex), curIndex);
+      } else {
+         return lastIndex; //out of bounds, retorna ultimo valor
+      }
+   }
 
    //MÉTODOS PROTEGIDOS  
    //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
+
+   protected boolean _ReplaceLargestLeftChild(int index){
+         int leftChild = _LeftChild(index);
+         if (leftChild >= this.maxNodes || this.nodeList[leftChild] == null)
+            return false;
+         
+         int largestInLeft = this._FindRightmostChild(leftChild);
+         String largestLeftVal = this.nodeList[largestInLeft]; //salvar valor do maior
+         this.nodeList[index] = largestLeftVal;
+         this.nodeList[largestInLeft] = null;
+
+         return true;
+   }
+
+   protected boolean _ReplaceSmallestRightChild(int index){
+      int rightChild = _RightChild(index);
+      if (rightChild >= this.maxNodes || this.nodeList[rightChild] == null)
+         return false;
+      
+      int smallestInRight= this._FindLeftmostChild(rightChild);
+      String largestLeftVal = this.nodeList[smallestInRight]; //salvar valor do maior
+      this.nodeList[index] = largestLeftVal;
+      this.nodeList[smallestInRight] = null;
+
+      return true;
+}
+
+   protected int _FindRightmostChild(int index){
+            if (index >= this.maxNodes){
+               System.out.println("index fora de bounds do array");
+               return -1;
+            }
+            return this.__FindRightmostRecu(index, index);
+   }
+
+   protected int _FindLeftmostChild(int index){
+      if (index >= this.maxNodes){
+         System.out.println("index fora de bounds do array");
+         return -1;
+      }
+      return this.__FindLeftmostRecu(index, index);
+   }
+
+
 
    //apos certas operações é necessário achar de novo qual o ultimo no da árvore
    protected void _FindLastNodeIndex() {

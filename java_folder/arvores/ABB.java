@@ -11,11 +11,14 @@ public class ABB extends ArvoreBin{
       ABB arv = new ABB(20);
 
       arv.Insert("b");
-      arv.Insert("a");
-      arv.Insert("c");
       arv.Insert("aa");
       arv.Insert("d");
+      arv.Insert("a");
+ 
+      arv.Insert("c");
       arv.Insert("f");
+      arv.Remove("a");
+  
 
       
       System.out.println(arv.toString());
@@ -46,7 +49,21 @@ public class ABB extends ArvoreBin{
 
    }
 
-
+   @Override
+   public boolean Remove (String value){
+      for (int i = 0; i <= this.lastNodeIndex; i++) {
+         if (this.nodeList[i] == value) {
+               this.nodeList[i] = null; //remove o nó
+               this._RemoveChild(_LeftChild(i)); //remove seus filhos
+               this._RemoveChild(_RightChild(i));
+               break;
+         }
+      }
+      this._FindLastNodeIndex(); //atualiza index do ultimo nó
+      this.nodeNumber--;
+      this.__CheckTreeBalancing(); //realiza operações de balanceamento caso seja necessário
+      return true;
+   }
 
    private int __GetBalancing(final int index){
 
@@ -108,7 +125,6 @@ public class ABB extends ArvoreBin{
 
    private void __CheckTreeBalancing(){
       for (int i = this.lastNodeIndex; i >= 0; i--) {
-            System.out.println(this.nodeList[i]);
             if (!this.__NodeIsBalanced(i)){
                this.__BalanceSubTree(i);
                System.out.println("balanceamento no nó " + i);
