@@ -136,15 +136,7 @@ public class ArvoreBin {
 
    //MÉTODOS PRIVADOS
 
-   private void __RemoveChild(final int indexToRemove) {
-      if (indexToRemove > this.lastNodeIndex)
-         return;
 
-      this.nodeList[indexToRemove] = null;
-      this.nodeNumber--;
-      this.__RemoveChild(__LeftChild(indexToRemove));
-      this.__RemoveChild(__RightChild(indexToRemove));
-   }
 
    private boolean __FindRecursive(final int curIndex, final String value){
       if (curIndex >= this.maxNodes)
@@ -177,6 +169,16 @@ public class ArvoreBin {
 
    //MÉTODOS PROTEGIDOS  
    //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
+
+   protected void __RemoveChild(final int indexToRemove) {
+      if (indexToRemove > this.lastNodeIndex)
+         return;
+
+      this.nodeList[indexToRemove] = null;
+      this.nodeNumber--;
+      this.__RemoveChild(__LeftChild(indexToRemove));
+      this.__RemoveChild(__RightChild(indexToRemove));
+   }
 
    protected int _FindIndex(final int curIndex, final String value) { //acha o index certo da string para ser inserida
       if (curIndex >= this.maxNodes)

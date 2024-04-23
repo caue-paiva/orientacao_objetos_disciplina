@@ -13,14 +13,23 @@ public class AVL extends ArvoreBin {
    public static void main(String[] args) {
       AVL avl = new AVL(50);
 
-      avl.Insert("b");
-      avl.Insert("a");
 
       // System.out.println(avl.toString());
-     avl.Insert("c");
+    
+      avl.Insert("c");
+      avl.Insert("b");
+      avl.Insert("e");
+      avl.Insert("a");
 
       avl.Insert("d");
-      avl.Insert("e");
+      avl.Insert("f");
+      avl.Insert("g");
+
+      avl.Remove("a");
+
+
+      //avl.Insert("d");
+      //avl.Insert("e");
 
      // System.out.println(avl.toString());
 
@@ -53,6 +62,22 @@ public class AVL extends ArvoreBin {
       this.__FindLastNodeIndex(); //atualiza o index do ultimo
       this.__CheckNodeListBalance(); //ve se a arvore precisa de balanceamento
       
+      return true;
+   }
+
+   @Override
+   public boolean Remove (String value){
+      for (int i = 0; i <= this.lastNodeIndex; i++) {
+         if (this.nodeList[i] == value) {
+               this.nodeList[i] = null; //remove o nó
+               this.__RemoveChild(__LeftChild(i)); //remove seus filhos
+               this.__RemoveChild(__RightChild(i));
+               break;
+         }
+      }
+      this.__FindLastNodeIndex(); //atualiza index do ultimo nó
+      this.nodeNumber--;
+      this.__CheckNodeListBalance(); //realiza operações de balanceamento caso seja necessário
       return true;
    }
 
@@ -201,7 +226,7 @@ public class AVL extends ArvoreBin {
    private boolean __CheckNodeListBalance() {
          for (int i = this.lastNodeIndex; i >= 0; i--) {
             if (!this.__NodeIsBalanced(i)){
-               System.out.println("rotação no " + i);
+                System.out.println("rotação no " + i);
                 this.__MakeRotation(i);
                 return true;
             }
