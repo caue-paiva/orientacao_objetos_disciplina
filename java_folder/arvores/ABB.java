@@ -31,6 +31,19 @@ public class ABB extends ArvoreBin{
       return true;
    }
 
+   private boolean __InsertNoBalancing(String value) {
+      return super.Insert(value);
+   }
+
+   private boolean __InsertListNoBalancing(List<String> list){
+      for (int i = 0; i < list.size(); i++) {
+         boolean insertResult = this.__InsertNoBalancing(list.get(i)); 
+         if (!insertResult)
+            return false; //falha na inserção   
+      }
+      return true;
+   }
+
    @Override
    public boolean Remove (String value){
       super.Remove(value); //chama a funcionalidade de busca da classe parente
@@ -75,22 +88,21 @@ public class ABB extends ArvoreBin{
 
    private boolean __BalanceSubTree(int index) {
       List<String> unbalancedNodeList = this._GetSubtreeVals(index); //pega todos os nós da subarvore desbalanceada
-      Collections.sort(unbalancedNodeList);
-      List<String> restOfTreeList = this.__CopyArrayExcluding(unbalancedNodeList);// pega todos os nós menos os desbalanc
+      Collections.sort(unbalancedNodeList);  //ordena os
+      System.out.println(unbalancedNodeList);
+
+      this._RemoveNodes(unbalancedNodeList); //remove nós desbalanceados
 
       int unbalacedListSize = unbalancedNodeList.size(); //tamanho dos desbalanceados
       
       String medianVal;
       medianVal = unbalancedNodeList.get(unbalacedListSize/2); //pega valor da mediana
+      System.out.println(medianVal);
 
-      ArvoreBin novaArvo = new ArvoreBin(this.maxNodes); //cria arvore aux
-      novaArvo.InsertList(restOfTreeList); //insere todo o resto da árvore que está balanceada
-      
-      novaArvo.Insert(medianVal); //insere valor da mediana
-      novaArvo.InsertList(this.ListOfNodes()); //insere os outros nós desbalanceados (não será inserido repetidos)
+      this.__InsertNoBalancing(medianVal); //insere valor da mediana
+      this.__InsertListNoBalancing(unbalancedNodeList); //insere os outros nós desbalanceados (não será inserido repetidos)
 
-      this.__CopyNodeList(novaArvo.nodeList); //copia lista de nós da ab aux pra a ABB
-
+      this.nodeNumber -= unbalacedListSize; //vamos compensar pelas inserções colocadas para balancear
       this._FindLastNodeIndex(); //Acha index do último nó
 
       return true;
