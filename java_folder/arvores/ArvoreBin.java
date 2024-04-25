@@ -17,11 +17,10 @@ public class ArvoreBin {
 
       arvo.Insert("b");
       arvo.Insert("a");
-     
       arvo.Insert("c");
       arvo.Insert("f");
      
-      arvo.Remove("c");
+      arvo.Remove("a");
 
       System.out.println(arvo.toString());
         
@@ -65,10 +64,11 @@ public class ArvoreBin {
    public boolean Remove(final String value) {
       for (int i = 0; i <= this.lastNodeIndex; i++) {
          if (this.nodeList[i] == value) {
-             this.nodeList[i] = null; //remove valor
-             ArvoreBin auxTree = new ArvoreBin(this.maxNodes); //arvo bin aux
-             auxTree.InsertList(this.ListOfNodes()); //insera valores restantes
-             this.__CopyNodeList(auxTree.nodeList); //copia array da aux pra atual
+             List<String> subTree = this._GetSubtreeVals(i); //pega valores da subarvore com raiz no no removido
+            
+             this._RemoveNodes(subTree); //remove nos da arvore sub-arvore removida
+             subTree.remove(subTree.indexOf(value)); //remove da lista o valor que vai ser removido da arvore
+             this.InsertList(subTree); //insera valores restantes da subarvore, em ordem
              break;
          }
       }
@@ -146,6 +146,16 @@ public class ArvoreBin {
 
    //MÉTODOS PROTEGIDOS  
    //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
+
+   protected void _RemoveNodes(List<String> nodesToRemove){
+      for (int i = 0; i < this.maxNodes; i++) {
+          String val =  this.nodeList[i];
+          if (nodesToRemove.contains(val)){
+               this.nodeList[i] = null;
+          }
+      }
+   }
+
 
    //retorna uma lista de nós em ordem baseado no array da AB, não tem a indexação direta (2*i +1 ou +2) de pais e filhos
    protected List<String> ListOfNodes(){
