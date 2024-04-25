@@ -89,7 +89,6 @@ public class ABB extends ArvoreBin{
    private boolean __BalanceSubTree(int index) {
       List<String> unbalancedNodeList = this._GetSubtreeVals(index); //pega todos os nós da subarvore desbalanceada
       Collections.sort(unbalancedNodeList);  //ordena os
-      System.out.println(unbalancedNodeList);
 
       this._RemoveNodes(unbalancedNodeList); //remove nós desbalanceados
 
@@ -97,7 +96,6 @@ public class ABB extends ArvoreBin{
       
       String medianVal;
       medianVal = unbalancedNodeList.get(unbalacedListSize/2); //pega valor da mediana
-      System.out.println(medianVal);
 
       this.__InsertNoBalancing(medianVal); //insere valor da mediana
       this.__InsertListNoBalancing(unbalancedNodeList); //insere os outros nós desbalanceados (não será inserido repetidos)
@@ -112,7 +110,6 @@ public class ABB extends ArvoreBin{
       for (int i = this.lastNodeIndex; i >= 0; i--) {
             if (!this.__NodeIsBalanced(i)){
                this.__BalanceSubTree(i);
-               System.out.println("balanceamento no nó " + i);
                return;
             }
       }

@@ -10,9 +10,8 @@ public class AVL extends ArvoreBin {
       AVL avl = new AVL(50);
 
 
-      List<String> vals = new ArrayList<>(List.of("b","a","c","d"));
+      List<String> vals = new ArrayList<>(List.of("d","c","f","g","b","bb"));
       avl.InsertList(vals);
-      avl.Remove("b");
     
       System.out.println(avl.toString());
    }
@@ -93,7 +92,6 @@ public class AVL extends ArvoreBin {
          int rightChildBalancing = this.__GetBalancing(_RightChild(index));
 
          if (rightChildBalancing < 0 ){ //pai e filho tem o mesmo sinal no balanceamento, rotação ESQ-ESQ simples
-            System.out.println("ESQ-ESQ");
             this.__RotationLogic(index, false);  
          } else {
             this.__RotationLogic(_RightChild(index), true); //rotação DIR_DIR no filho direito do desbalanceado
@@ -107,35 +105,41 @@ public class AVL extends ArvoreBin {
 
    private void __RotationLogic(int rootIndex, boolean rightRotation) {
       List<String> UnbalancedSubTreeNodes = this._GetSubtreeVals(rootIndex);
-      List<String> restOfTreeList = this.__CopyArrayExcluding(UnbalancedSubTreeNodes);
+      String leftSon = this.nodeList[this._NodeLeft(rootIndex)];
+      String rightSon = this.nodeList[this._NodeRight(rootIndex)];
 
-      ArvoreBin balancedPart = new ArvoreBin(this.maxNodes);
-      ArvoreBin rotatePart = new ArvoreBin(this.maxNodes);
-      ArvoreBin finalBalancedTree = new ArvoreBin(this.maxNodes); //arvore com o vetor final
-
-      balancedPart.InsertList(restOfTreeList); //insera todos os nós da avl menos o da subarvore balanceada
+      this._RemoveNodes(UnbalancedSubTreeNodes); //remove nós desbalanceados da lista 
       
       if (rightRotation){
-         String leftSon = this.nodeList[this._NodeLeft(rootIndex)];
-         rotatePart.Insert(leftSon); //coloca o filho esquerdo da raiz como nova raiz (rotação DIR_DIR) da sub-arvore desbalanceada
+         this.__InsertNoBalancing(leftSon); //coloca o filho esquerdo da raiz como nova raiz (rotação DIR_DIR) da sub-arvore desbalanceada
       }else {
-         String rightSon = this.nodeList[this._NodeRight(rootIndex)];
-         rotatePart.Insert(rightSon);//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
+         this.__InsertNoBalancing(rightSon);//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
       }
-      rotatePart.Insert(UnbalancedSubTreeNodes.get(0)); //coloca o nó raiz da sub-arvore desbalanceada
-      rotatePart.InsertList(UnbalancedSubTreeNodes); //coloca o resto dos nós desbalanceados, os já adicionados não serão colocados dnv, ja que tem um check no método .Insert()
 
-      finalBalancedTree.InsertList(balancedPart.ListOfNodes());
-      finalBalancedTree.InsertList(rotatePart.ListOfNodes());
+      this.__InsertNoBalancing(UnbalancedSubTreeNodes.get(0)); //coloca o nó raiz da sub-arvore desbalanceada
+      this.__InsertListNoBalancing(UnbalancedSubTreeNodes); //coloca o resto dos nós desbalanceados, os já adicionados não serão colocados dnv, ja que tem um check no método .Insert()
+      this.nodeNumber -= UnbalancedSubTreeNodes.size(); //subtrair pelo tamanho do array de desbalanceados 
+     
+   }
 
-      this.__CopyNodeList(finalBalancedTree.nodeList);
+
+   private boolean __InsertNoBalancing(String value) {
+      return super.Insert(value);
+   }
+
+   private boolean __InsertListNoBalancing(List<String> list){
+      for (int i = 0; i < list.size(); i++) {
+         boolean insertResult = this.__InsertNoBalancing(list.get(i)); 
+         if (!insertResult)
+            return false; //falha na inserção   
+      }
+      return true;
    }
 
    //retorna true se uma rotação foi feita e false senão
    private boolean __CheckNodeListBalance() {
          for (int i = this.lastNodeIndex; i >= 0; i--) {
             if (!this.__NodeIsBalanced(i)){
-                System.out.println("rotação no " + i);
                 this.__MakeRotation(i);
                 return true;
             }
