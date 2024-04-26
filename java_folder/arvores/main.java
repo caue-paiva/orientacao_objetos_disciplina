@@ -1,32 +1,43 @@
-package java_folder.arvores;
 import java.util.Scanner;
 
 public class main {
 
    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter your lines. Type 'exit' to finish.");
+        final int len = 1000;
+        AVL avl = new AVL(len );
+        ArvoreBin ab = new ArvoreBin(len);
+        ABB abb = new ABB(len);
 
         while (scanner.hasNextLine()) {
             String input = scanner.nextLine();
-   
-            String[] lines = input.split("(?<=\\bi )");
-            for (String line : lines) {
-                line = line.trim();
-                if (!line.isEmpty()) {
-                    String[] words = line.split("\\s+");
-                    if (words.length > 1) {
-                        char firstChar = line.charAt(0);
-                        String secondString = words[1];
+            if (input.isEmpty())
+                break;
+            String command = String.valueOf(input.charAt(0));
+            String restOfString = input.substring(2);
 
-                        System.out.println("First character: " + firstChar);
-                        System.out.println("Second string: " + secondString);
-                    }
-                }
-
-      }
+            switch (command) {
+                case "i":
+                    avl.Insert(restOfString);
+                    abb.Insert(restOfString);
+                    ab.Insert(restOfString);
+                    break;
+                case "d":
+                    avl.Remove(restOfString);
+                    abb.Remove(restOfString);
+                    ab.Remove(restOfString);
+                default:
+                    break;
+            }
+        }
+        System.out.println(ab.toString()); //ordem correta do runcodes
+        System.out.println();
+        System.out.println(abb.toString());
+        System.out.println();
+        System.out.println(avl.toString());
+        System.out.println();
+        scanner.close();
     }
-     scanner.close();
+    
    }
 
-}

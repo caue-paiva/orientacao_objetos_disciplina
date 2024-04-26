@@ -1,4 +1,3 @@
-package java_folder.arvores;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 all: 
-	javac ArvoreBin.java ABB.java AVL.java
+	javac ArvoreBin.java  ABB.java  AVL.java  main.java
 run:
-	java Jogo 
+	java main
 
 clean:
 	rm -rf *.class
