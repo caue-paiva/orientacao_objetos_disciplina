@@ -97,7 +97,7 @@ public class ArvoreBin {
 
    @Override
    public String toString() {
-      String treeStr = "";
+      String treeStr = "digraph {";
 
       for (int i = 0; i <= this.lastNodeIndex; i++) {
             int leftChildIndex = _LeftChild(i);
@@ -109,18 +109,18 @@ public class ArvoreBin {
 
             if (leftChildIndex <= this.lastNodeIndex && this.nodeList[leftChildIndex] != null){ //caso o index seja menor ou igual ao ultimo no na arvore, então existe um filho
                String leftChildStr = this.nodeList[leftChildIndex];
-               String formattedString = String.format( "%d %s ->  %d %s", i , curStr, leftChildIndex, leftChildStr);
-               treeStr += (formattedString + "\n"); //soma string formatada com conexão entre pai e filho no resultado
+               String formattedString = String.format( "\n\"%d %s ->  %d %s\"", i , curStr, leftChildIndex, leftChildStr);
+               treeStr += (formattedString ); //soma string formatada com conexão entre pai e filho no resultado
               
             }
             if (rightChildIndex <= this.lastNodeIndex && this.nodeList[rightChildIndex] != null){
                String rightChildStr = this.nodeList[rightChildIndex];
-               String formattedString = String.format( "%d %s ->  %d %s", i , curStr, rightChildIndex, rightChildStr);
-               treeStr += (formattedString + "\n");
+               String formattedString = String.format("\n\"%d %s\" ->  \"%d %s\"", i , curStr, rightChildIndex, rightChildStr);
+               treeStr += (formattedString);
             }
 
       }
-      return treeStr;
+      return treeStr + " }";
    }
 
    //MÉTODOS PRIVADOS
