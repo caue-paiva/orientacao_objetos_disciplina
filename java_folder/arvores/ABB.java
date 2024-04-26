@@ -9,10 +9,14 @@ public class ABB extends ArvoreBin{
    public static void main(String[] args) {
       ABB arv = new ABB(20);
 
-      List<String> vals = new ArrayList<>(List.of("y","z","e","n","r","q"));
-      arv.InsertList(vals);
-     
-      System.out.println(arv.__GetBalancing(1));      
+      List<String> caso9 =    List.of("y","z","e","n","r","q");
+      List<String> caso7 =    List.of("s","c","o","l","n");
+      List<String> caso6 =    List.of("y","x","z","c","n");
+
+      //List<String> vals = new ArrayList<>(List.of("y","z","e","n","r","q"));
+      arv.Insert("i");
+     // arv.Remove("d");
+      System.out.println(arv.nodeNumber);
       System.out.println(arv.toString());
 
    }
@@ -24,7 +28,9 @@ public class ABB extends ArvoreBin{
    @Override
    public boolean Insert(String value){
       super.Insert(value);
-      this.__CheckTreeBalancing(); //ve se a arvore precisa de balanceamento
+
+      if (this.nodeNumber > 2) //so balancea se tiver mais de 2 nós, já que nunca vai ficar desbalanceado so com 2 nós na arvore, antes isso fazia uns casos do runcodes dar problema
+         this.__CheckTreeBalancing(); //ve se a arvore precisa de balanceamento
       
       return true;
    }
@@ -33,7 +39,7 @@ public class ABB extends ArvoreBin{
    public boolean InsertList(final List<String> list) {        
       for (int i = 0; i < list.size(); i++) {
             boolean insertResult = this.Insert(list.get(i)); 
-            System.out.println("inseriu o no "+ list.get(i));
+           // System.out.println("inseriu o no "+ list.get(i));
             if (!insertResult)
                return false; //falha na inserção   
       }
@@ -56,7 +62,9 @@ public class ABB extends ArvoreBin{
    @Override
    public boolean Remove (String value){
       super.Remove(value); //chama a funcionalidade de busca da classe parente
-      this.__CheckTreeBalancing(); //realiza operações de balanceamento caso seja necessário
+      
+      if (this.nodeNumber > 0) //so balancea se a arvore n tiver vazia, dava erro antes sem isso
+         this.__CheckTreeBalancing(); //realiza operações de balanceamento caso seja necessário
       return true;
    }
 
@@ -81,7 +89,7 @@ public class ABB extends ArvoreBin{
 
    private boolean __NodeIsBalanced(final int index){
          if (index >= this.maxNodes){
-               System.out.println("index chamado na função __Isbalanced está fora do limite do array");
+               //System.out.println("index chamado na função __Isbalanced está fora do limite do array");
                return true; //n precisa rotacionar nesse caso de erro
          }
          if (this.nodeList[index] == null) //caso o nó não exista
@@ -98,7 +106,7 @@ public class ABB extends ArvoreBin{
    private boolean __BalanceSubTree(int index) {
       List<String> unbalancedNodeList = this._GetSubtreeVals(index); //pega todos os nós da subarvore desbalanceada
       Collections.sort(unbalancedNodeList);  //ordena os
-      System.out.println("lista nos desbalan ordenada " + unbalancedNodeList);
+      //System.out.println("lista nos desbalan ordenada " + unbalancedNodeList);
 
       this._RemoveNodes(unbalancedNodeList); //remove nós desbalanceados
 
@@ -111,20 +119,21 @@ public class ABB extends ArvoreBin{
       }
       String medianVal;
       medianVal = unbalancedNodeList.get(indexMedian); //pega valor da mediana
-      System.out.println("index mediana"+indexMedian +"valor mediana " + medianVal);
+      //System.out.println("index mediana"+indexMedian +"valor mediana " + medianVal);
       this.__InsertNoBalancing(medianVal); //insere valor da mediana
       this.__InsertListNoBalancing(unbalancedNodeList); //insere os outros nós desbalanceados (não será inserido repetidos)
 
-      this.nodeNumber -= unbalacedListSize; //vamos compensar pelas inserções colocadas para balancear
+      this._CountNodeNum(); //vamos compensar pelas inserções colocadas para balancear
       this._FindLastNodeIndex(); //Acha index do último nó
 
       return true;
    }
 
    private void __CheckTreeBalancing(){
-      for (int i = 0; i <= this.lastNodeIndex; i++) {
+      this.__BalanceSubTree(0); //balancea o nó 0 sempre
+      for (int i = 1; i <= this.lastNodeIndex; i++) {
             if (!this.__NodeIsBalanced(i)){
-               System.out.println("balanceamento no nó "+i);
+              // System.out.println("balanceamento no nó "+i);
                this.__BalanceSubTree(i);
             }
       }

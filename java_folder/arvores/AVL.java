@@ -104,14 +104,21 @@ public class AVL extends ArvoreBin {
 
    private void __RotationLogic(int rootIndex, boolean rightRotation) {
       List<String> UnbalancedSubTreeNodes = this._GetSubtreeVals(rootIndex);
-      String leftSon = this.nodeList[this._NodeLeft(rootIndex)];
-      String rightSon = this.nodeList[this._NodeRight(rootIndex)];
+      int leftChildIndex = this._NodeLeft(rootIndex);
+      int rightChildIndex = this._NodeRight(rootIndex);
+      String leftSon = null;
+      String rightSon = null;
+      
+      if (leftChildIndex > -1 && leftChildIndex < this.maxNodes)
+         leftSon = this.nodeList[leftChildIndex];
+      if (rightChildIndex > -1 && rightChildIndex < this.maxNodes)
+         rightSon = this.nodeList[rightChildIndex];
 
       this._RemoveNodes(UnbalancedSubTreeNodes); //remove nós desbalanceados da lista 
       
-      if (rightRotation){
+      if (rightRotation && leftSon != null){
          this.__InsertNoBalancing(leftSon); //coloca o filho esquerdo da raiz como nova raiz (rotação DIR_DIR) da sub-arvore desbalanceada
-      }else {
+      }else if (rightSon != null) {
          this.__InsertNoBalancing(rightSon);//coloca o filho direito da raiz como nova raiz (rotação ESQ-ESQ) da sub-arvore desbalanceada
       }
 

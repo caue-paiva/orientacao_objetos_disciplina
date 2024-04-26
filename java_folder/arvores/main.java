@@ -4,8 +4,8 @@ public class main {
 
    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        final int len = 1000;
-        AVL avl = new AVL(len );
+        final int len = 5000;
+        AVL avl = new AVL(len);
         ArvoreBin ab = new ArvoreBin(len);
         ABB abb = new ABB(len);
 
@@ -23,6 +23,7 @@ public class main {
                     ab.Insert(restOfString);
                     break;
                 case "d":
+            
                     avl.Remove(restOfString);
                     abb.Remove(restOfString);
                     ab.Remove(restOfString);

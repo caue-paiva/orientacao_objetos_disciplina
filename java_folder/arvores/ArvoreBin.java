@@ -15,12 +15,7 @@ public class ArvoreBin {
       ArvoreBin arvo = new ArvoreBin(10);
 
       arvo.Insert("b");
-      arvo.Insert("a");
-      arvo.Insert("c");
-      arvo.Insert("f");
-     
-      arvo.Remove("a");
-
+   
       System.out.println(arvo.toString());
         
    }
@@ -61,15 +56,19 @@ public class ArvoreBin {
    }
 
    public boolean Remove(final String value) {
-      for (int i = 0; i <= this.lastNodeIndex; i++) {
-         if (this.nodeList[i] == value) {
+      if (!this.Find(value))
+         return false;
+
+      for (int i = 0; i < this.maxNodes; i++) {
+         String node = this.nodeList[i];
+         if (node != null && node.equals(value)) {
              List<String> subTree = this._GetSubtreeVals(i); //pega valores da subarvore com raiz no no removido
             
              this._RemoveNodes(subTree); //remove nos da arvore sub-arvore removida
              subTree.remove(subTree.indexOf(value)); //remove da lista o valor que vai ser removido da arvore
              this.InsertList(subTree); //insera valores restantes da subarvore, em ordem
              break;
-         }
+         } 
       }
       this._FindLastNodeIndex();
       this.nodeNumber--;
@@ -98,6 +97,11 @@ public class ArvoreBin {
    public String toString() {
       String treeStr = "digraph {";
 
+      if (this.nodeNumber == 1){
+         String nodeVal = this.nodeList[0];
+         treeStr += String.format( "\n\"%d %s\" }", 0,nodeVal);
+         return treeStr;
+      }else {
       for (int i = 0; i <= this.lastNodeIndex; i++) {
             int leftChildIndex = _LeftChild(i);
             int rightChildIndex = _RightChild(i);
@@ -119,6 +123,7 @@ public class ArvoreBin {
             }
 
       }
+   }
       return treeStr + " \n}";
    }
 
@@ -146,6 +151,16 @@ public class ArvoreBin {
    //MÉTODOS PROTEGIDOS  
    //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
 
+   protected void _CountNodeNum(){
+      int count = 0;
+      for (int i = 0; i < this.maxNodes; i++) {
+         String node = this.nodeList[i];
+         if (node != null)
+            count++;
+      }
+      this.nodeNumber = count;
+   }
+
    protected void _RemoveNodes(List<String> nodesToRemove){
       for (int i = 0; i < this.maxNodes; i++) {
           String val =  this.nodeList[i];
@@ -153,6 +168,7 @@ public class ArvoreBin {
                this.nodeList[i] = null;
           }
       }
+      this.nodeNumber -= nodesToRemove.size();
    }
 
 
