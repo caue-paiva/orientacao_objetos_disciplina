@@ -129,11 +129,13 @@ public class AVL extends ArvoreBin {
    }
 
 
-   private boolean __InsertNoBalancing(String value) {
+   private boolean __InsertNoBalancing(String value) { //insere sem balanceamento usado a função da arvore mãe
+      //, usado na logica de balanceamento ao inserir nós na ordem correta
       return super.Insert(value);
    }
 
-   private boolean __InsertListNoBalancing(List<String> list){
+   private boolean __InsertListNoBalancing(List<String> list){//insere uma lista sem balanceamento usado a função da arvore mãe
+      //, usado na logica de balanceamento ao inserir nós na ordem correta
       for (int i = 0; i < list.size(); i++) {
          boolean insertResult = this.__InsertNoBalancing(list.get(i)); 
          if (!insertResult)

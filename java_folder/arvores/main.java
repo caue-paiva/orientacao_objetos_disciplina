@@ -4,26 +4,25 @@ public class main {
 
    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        final int len = 5000;
-        AVL avl = new AVL(len);
+        final int len = 1000;
+        AVL avl = new AVL(len); //declara todas as arvores
         ArvoreBin ab = new ArvoreBin(len);
         ABB abb = new ABB(len);
 
         while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
+            String input = scanner.nextLine(); //le linha de input
             if (input.isEmpty())
                 break;
-            String command = String.valueOf(input.charAt(0));
+            String command = String.valueOf(input.charAt(0)); //pega comando
             String restOfString = input.substring(2);
 
             switch (command) {
-                case "i":
+                case "i": //caso de inserir
                     avl.Insert(restOfString);
                     abb.Insert(restOfString);
                     ab.Insert(restOfString);
                     break;
-                case "d":
-            
+                case "d": //caso de remover
                     avl.Remove(restOfString);
                     abb.Remove(restOfString);
                     ab.Remove(restOfString);
@@ -31,7 +30,7 @@ public class main {
                     break;
             }
         }
-        System.out.println(ab.toString()); //ordem correta do runcodes
+        System.out.println(ab.toString()); //print na ordem correta do runcodes
         System.out.println();
         System.out.println(abb.toString());
         System.out.println();

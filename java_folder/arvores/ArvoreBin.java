@@ -45,8 +45,8 @@ public class ArvoreBin {
       return true;
    }
 
+   //insere uma lista na árvore
    public boolean InsertList(final List<String> list) {        
-      
       for (int i = 0; i < list.size(); i++) {
             boolean insertResult = this.Insert(list.get(i)); 
             if (!insertResult)
@@ -56,10 +56,10 @@ public class ArvoreBin {
    }
 
    public boolean Remove(final String value) {
-      if (!this.Find(value))
+      if (!this.Find(value)) //se o item não existir n vamos remover
          return false;
 
-      for (int i = 0; i < this.maxNodes; i++) {
+      for (int i = 0; i < this.maxNodes; i++) { //loop pelo array de nós
          String node = this.nodeList[i];
          if (node != null && node.equals(value)) {
              List<String> subTree = this._GetSubtreeVals(i); //pega valores da subarvore com raiz no no removido
@@ -70,7 +70,7 @@ public class ArvoreBin {
              break;
          } 
       }
-      this._FindLastNodeIndex();
+      this._FindLastNodeIndex(); //atualiza o indice do último nó
       this.nodeNumber--;
       return true;
    }
@@ -97,31 +97,30 @@ public class ArvoreBin {
    public String toString() {
       String treeStr = "digraph {";
 
-      if (this.nodeNumber == 1){
+      if (this.nodeNumber == 1){ //caso a arvore so tenha 1 nó
          String nodeVal = this.nodeList[0];
          treeStr += String.format( "\n\"%d %s\" }", 0,nodeVal);
          return treeStr;
-      }else {
-      for (int i = 0; i <= this.lastNodeIndex; i++) {
-            int leftChildIndex = _LeftChild(i);
-            int rightChildIndex = _RightChild(i);
-            String curStr = this.nodeList[i];
-            if (curStr == null)
-               continue;
-        
+      }else { //caso a arvore so tenha mais de um nó
+         for (int i = 0; i <= this.lastNodeIndex; i++) {
+               int leftChildIndex = _LeftChild(i);
+               int rightChildIndex = _RightChild(i);
+               String curStr = this.nodeList[i];
+               if (curStr == null)
+                  continue;
+         
 
-            if (leftChildIndex <= this.lastNodeIndex && this.nodeList[leftChildIndex] != null){ //caso o index seja menor ou igual ao ultimo no na arvore, então existe um filho
-               String leftChildStr = this.nodeList[leftChildIndex];
-               String formattedString = String.format( "\n\"%d %s\" ->\"%d %s\"", i , curStr, leftChildIndex, leftChildStr);
-               treeStr += (formattedString ); //soma string formatada com conexão entre pai e filho no resultado
-              
-            }
-            if (rightChildIndex <= this.lastNodeIndex && this.nodeList[rightChildIndex] != null){
-               String rightChildStr = this.nodeList[rightChildIndex];
-               String formattedString = String.format("\n\"%d %s\" ->\"%d %s\"", i , curStr, rightChildIndex, rightChildStr);
-               treeStr += (formattedString);
-            }
-
+               if (leftChildIndex <= this.lastNodeIndex && this.nodeList[leftChildIndex] != null){ //caso o index seja menor ou igual ao ultimo no na arvore, então existe um filho
+                  String leftChildStr = this.nodeList[leftChildIndex];
+                  String formattedString = String.format( "\n\"%d %s\" ->\"%d %s\"", i , curStr, leftChildIndex, leftChildStr);
+                  treeStr += (formattedString ); //soma string formatada com conexão entre pai e filho no resultado
+               
+               }
+               if (rightChildIndex <= this.lastNodeIndex && this.nodeList[rightChildIndex] != null){
+                  String rightChildStr = this.nodeList[rightChildIndex];
+                  String formattedString = String.format("\n\"%d %s\" ->\"%d %s\"", i , curStr, rightChildIndex, rightChildStr);
+                  treeStr += (formattedString);
+               }
       }
    }
       return treeStr + " \n}";
@@ -195,6 +194,7 @@ public class ArvoreBin {
          this.lastNodeIndex = -1; //não achamos nenhum valor diferente de null na lista, então ela esta vazia
    }
 
+   //funções estaticas da classe para pegar filho dir e esquerdo
    protected static int _LeftChild (int index) {
       return (index*2) +1;
    }
@@ -307,18 +307,6 @@ public class ArvoreBin {
           return -1;
       else
          return leftChildIndex;
-   }
-
-   protected void __CopyNodeList(String[] newVals){
-      if (newVals.length != this.nodeList.length){
-         System.out.println("WARNING: arrays são de tamanhos diferentes, operação falhou");
-         return;
-      }
-
-      for (int i = 0; i < newVals.length; i++) {
-         this.nodeList[i] = newVals[i]; 
-      }
-
    }
 
 }
