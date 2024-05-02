@@ -5,16 +5,16 @@ public class main {
    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         final int len = 1000;
-        AVL avl = new AVL(len); //declara todas as arvores
+        AVL avl = new AVL(len); //instancia todas as arvores
         ArvoreBin ab = new ArvoreBin(len);
         ABB abb = new ABB(len);
 
-        while (scanner.hasNextLine()) {
+        while (scanner.hasNextLine()) { //enquanto tiver  linhas de input
             String input = scanner.nextLine(); //le linha de input
             if (input.isEmpty())
                 break;
             String command = String.valueOf(input.charAt(0)); //pega comando
-            String restOfString = input.substring(2);
+            String restOfString = input.substring(2); //pega o valor a ser inserido
 
             switch (command) {
                 case "i": //caso de inserir

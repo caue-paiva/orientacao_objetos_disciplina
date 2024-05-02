@@ -5,10 +5,10 @@ import java.util.Queue;
 
 public class ArvoreBin {
 
-   protected String[] nodeList;
+   protected String[] nodeList; //index do ultimo nó e o array que contém os nós é protected
    protected int lastNodeIndex; //guarda o index do ultimo no do array, nesse caso é um valor inclusivo a ser checado nos IFs, já que ele contem um valor válido
-   public int maxNodes;
-   public int nodeNumber;
+   protected int maxNodes; //variaveis protegidas sobre status da árvore, como numero de nós e numero máximo de nos
+   protected int nodeNumber;
 
 
    public static void main(String[] args) {
@@ -27,6 +27,7 @@ public class ArvoreBin {
       this.lastNodeIndex = -1;
    }
 
+   //insere uma string na árvore
    public boolean Insert(final String value) {
       if (this.nodeNumber >= this.maxNodes){ //caso o numero de nos seja maior ou igual ao máximo de nos
          return false;
@@ -55,6 +56,7 @@ public class ArvoreBin {
       return true;
    }
 
+   //remove um nó se ele existir
    public boolean Remove(final String value) {
       if (!this.Find(value)) //se o item não existir n vamos remover
          return false;
@@ -79,10 +81,12 @@ public class ArvoreBin {
       return this.nodeNumber;
    }
 
+   //retorna true se um nó existe na arvore, false se não existe
    public boolean Find(final String value) {      
       return this.__FindRecursive(0, value);
    }
 
+   //printa os valores do vetor de uma árvore
    public void PrintTree() {
       if (this.nodeNumber == 0){
          System.out.println("arvore vazia");
@@ -93,6 +97,7 @@ public class ArvoreBin {
       }
    }
 
+   //representação da arvore numa string
    @Override
    public String toString() {
       String treeStr = "digraph {";
@@ -128,6 +133,7 @@ public class ArvoreBin {
 
    //MÉTODOS PRIVADOS
 
+   //tenta achar um nó na arvore
    private boolean __FindRecursive(final int curIndex, final String value){
       if (curIndex >= this.maxNodes)
         return false;
@@ -150,6 +156,7 @@ public class ArvoreBin {
    //MÉTODOS PROTEGIDOS  
    //Usados para que as subclasses consigam manipular a heap, mas o usuaŕio final não  
 
+   //conta quantos nós tem na árvore
    protected void _CountNodeNum(){
       int count = 0;
       for (int i = 0; i < this.maxNodes; i++) {
@@ -160,6 +167,7 @@ public class ArvoreBin {
       this.nodeNumber = count;
    }
 
+   //remove uma lista de nós do array da árvore
    protected void _RemoveNodes(List<String> nodesToRemove){
       for (int i = 0; i < this.maxNodes; i++) {
           String val =  this.nodeList[i];
@@ -167,7 +175,7 @@ public class ArvoreBin {
                this.nodeList[i] = null;
           }
       }
-      this.nodeNumber -= nodesToRemove.size();
+      this.nodeNumber -= nodesToRemove.size(); //subtrai o numero de nos da arvore
    }
 
 
@@ -203,7 +211,7 @@ public class ArvoreBin {
       return (index*2) +2;
    }
 
-   //realiza uma DFS e retorna uma lista de nos da sub-arvore, essa lista tem a mesma ordenação dos nós no vetor que representa a árvore
+   //realiza uma BFS e retorna uma lista de nos da sub-arvore, essa lista tem a mesma ordenação dos nós no vetor que representa a árvore
    protected List<String> _GetSubtreeVals(int rootIndex){
       if (rootIndex > this.lastNodeIndex) {
          return new ArrayList<>(); // Retorna uma lista vazia se o index da raiz for maior que o ultimo no
@@ -249,7 +257,8 @@ public class ArvoreBin {
       return returnList;
    }
 
-   protected int _FindIndex(final int curIndex, final String value) { //acha o index certo da string para ser inserida
+    //acha o index certo da string para ser inserida
+   protected int _FindIndex(final int curIndex, final String value) {
       if (curIndex >= this.maxNodes)
         throw new IndexOutOfBoundsException("Index fora do tam maximo do array: " + curIndex);
       

@@ -19,6 +19,7 @@ public class AVL extends ArvoreBin {
       super(len);
    }
 
+   //override na inserção , usando parte da lógica da inserção da classe mae mas com o balanceamento
    @Override
    public boolean Insert(String value){
       super.Insert(value); //chama o método da classe pai
@@ -26,6 +27,7 @@ public class AVL extends ArvoreBin {
       return true;
    }
 
+   //override na remoção , usando parte da lógica da remoção da classe mae mas com o balanceamento
    @Override
    public boolean Remove (String value){
       super.Remove(value); //remoção igual ao metodo da classe pai
@@ -33,6 +35,8 @@ public class AVL extends ArvoreBin {
       return true;
    }
 
+
+   //retorna true se o nó é balanceado e false se não for
    private boolean __NodeIsBalanced(int index){
       int balancingFactor = this.__GetBalancing(index);
       
@@ -42,6 +46,7 @@ public class AVL extends ArvoreBin {
          return true;
    }
 
+   //retorna o int que representa o fator de balanceamento da ABB
    private int __GetBalancing (int index)  {
       if (index > this.lastNodeIndex) {
          System.out.println("WARNING: Acessando a altura de um nó que não existe " + index + " retornando altura 0");
@@ -53,6 +58,7 @@ public class AVL extends ArvoreBin {
       return leftHeight - rightHeight;
    }
 
+   //acha a altura de um nó
    private int __GetHeightRecu(int index) {
          if (index > this.lastNodeIndex || this.nodeList[index] == null) 
             return 0; 
@@ -66,6 +72,7 @@ public class AVL extends ArvoreBin {
             return rightHeight;
    }
 
+   //lógica para achar qual o tipo de rotação é necessário fazer
    private void __MakeRotation(int index) {
       if (index > this.lastNodeIndex) {
          System.out.println("WARNING: tentando rotacionar um nó que não existe " + index);
@@ -102,9 +109,10 @@ public class AVL extends ArvoreBin {
       this._FindLastNodeIndex(); //acha o novo ultimo nó da arvore
    }
 
+   //função para realizar a rotação em si, com uma flag de rotação dir ou esquerda
    private void __RotationLogic(int rootIndex, boolean rightRotation) {
-      List<String> UnbalancedSubTreeNodes = this._GetSubtreeVals(rootIndex);
-      int leftChildIndex = this._NodeLeft(rootIndex);
+      List<String> UnbalancedSubTreeNodes = this._GetSubtreeVals(rootIndex); //nós da subarvore desbalanceada
+      int leftChildIndex = this._NodeLeft(rootIndex); //filhos esq e dir do nó raiz da subarvore
       int rightChildIndex = this._NodeRight(rootIndex);
       String leftSon = null;
       String rightSon = null;
