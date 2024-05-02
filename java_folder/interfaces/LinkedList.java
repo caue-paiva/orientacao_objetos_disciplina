@@ -5,8 +5,6 @@ class Node <T> {
    public T value;
    public Node<T> next;
 
-
-
    Node (T value){
       this.value = value;
       this.next = null;
@@ -19,7 +17,7 @@ public class LinkedList <T> {
    private Node<T> head;
 
    public static void main(String[] args) {
-      LinkedList<String> lista = new LinkedList();
+      LinkedList<String> lista = new LinkedList<String>();
       lista.appendEnd("aaa");
       lista.appendEnd("ddd");
       lista.appendEnd("hhh");
@@ -43,7 +41,7 @@ public class LinkedList <T> {
       if (this.head == null){
          this.head = newNode;
       } else {
-         Node<T> lastNode = this.findLastNode();
+         Node<T> lastNode = this.__findLastNode();
          lastNode.next = newNode;
       }
       this.size++;
@@ -70,7 +68,7 @@ public class LinkedList <T> {
       }else if (this.size == 2){
          this.head.next = null;
       } else {
-         Node<T> secondFinalNode = this.findSecondLastNode();
+         Node<T> secondFinalNode = this.__findSecondLastNode();
          secondFinalNode.next = null;
       }
 
@@ -86,6 +84,39 @@ public class LinkedList <T> {
          return true;
    }
 
+   public boolean exists(T value){
+      if (this.size == 0)
+         return false;
+      
+      Node<T> curNode = this.head;
+      while (curNode != null){
+         if (curNode.value == value){
+            return true;
+         }
+         curNode = curNode.next;
+      }
+      return false;
+   }
+
+   public T atIndex(int index){
+      Node<T> node = this.__nodeAtIndex(index);
+      if (node != null){
+         return node.value;
+      }else{
+         return null;
+      }
+   }
+
+   public boolean setIndex(T value, int index){
+      Node<T> node = this.__nodeAtIndex(index);
+      if (node != null){
+          node.value = value;
+          return true;
+      }else{
+         return false;
+      }
+   }
+
    @Override
    public String toString(){
       String returnStr = "";
@@ -99,7 +130,27 @@ public class LinkedList <T> {
       return returnStr;
    }
 
-   private Node<T> findLastNode() {
+   private Node<T> __nodeAtIndex(int index){
+      if (index >= this.size){
+         System.out.println("index não existe na lista");
+         return null;
+      }
+
+      Node<T> curNode = this.head;
+      int curIndex = 0;
+
+      while (curNode != null){
+         if (curIndex == index){
+            return curNode;
+         }
+         curNode = curNode.next;
+         curIndex++;
+      }
+
+      return null;
+   }
+
+   private Node<T> __findLastNode() {
       Node<T> curNode = this.head;
       if (curNode == null)
          return null;
@@ -111,7 +162,7 @@ public class LinkedList <T> {
       return curNode;
    }
 
-   private Node<T> findSecondLastNode(){
+   private Node<T> __findSecondLastNode(){
       Node<T> curNode = this.head;
       if (curNode == null || curNode.next == null)
          return null;
