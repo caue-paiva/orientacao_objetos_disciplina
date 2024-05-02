@@ -29,7 +29,7 @@ public class ABB extends ArvoreBin{
    public boolean Insert(String value){
       super.Insert(value);
 
-      if (this.nodeNumber > 2) //so balancea se tiver mais de 2 nós, já que nunca vai ficar desbalanceado so com 2 nós na arvore, antes isso fazia uns casos do runcodes dar problema
+      if (this.nodeNumber > 2) //so balancea se tiver mais de 2 nós, já que nunca vai ficar desbalanceado so com 2 nós na arvore, sem isso uns casos do runcodes davam problema
          this.__CheckTreeBalancing(); //ve se a arvore precisa de balanceamento
       
       return true;
@@ -67,7 +67,7 @@ public class ABB extends ArvoreBin{
    public boolean Remove (String value){
       super.Remove(value); //chama a funcionalidade de busca da classe parente
       
-      if (this.nodeNumber > 0) //so balancea se a arvore n tiver vazia, dava erro antes sem isso
+      if (this.nodeNumber > 0) //so balancea se a arvore n tiver vazia, sem isso uns casos do runcodes davam problema
          this.__CheckTreeBalancing(); //realiza operações de balanceamento caso seja necessário
       return true;
    }
