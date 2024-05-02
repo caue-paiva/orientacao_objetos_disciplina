@@ -66,7 +66,7 @@ public class ArvoreBin {
             
              this._RemoveNodes(subTree); //remove nos da arvore sub-arvore removida
              subTree.remove(subTree.indexOf(value)); //remove da lista o valor que vai ser removido da arvore
-             this.InsertList(subTree); //insera valores restantes da subarvore, em ordem
+             this.InsertList(subTree); //insere valores restantes da subarvore, em ordem
              break;
          } 
       }
