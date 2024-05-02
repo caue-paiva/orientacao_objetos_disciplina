@@ -3,7 +3,7 @@ import java.util.Collections;
 
 public class ABB extends ArvoreBin{
 
-   private static final int maxBalancingFactor = 1;
+   private static final int maxBalancingFactor = 1; //constante privada para o fator de balanceamento máximo
 
    public static void main(String[] args) {
       ABB arv = new ABB(20);
@@ -39,8 +39,7 @@ public class ABB extends ArvoreBin{
    @Override
    public boolean InsertList(final List<String> list) {        
       for (int i = 0; i < list.size(); i++) {
-            boolean insertResult = this.Insert(list.get(i)); 
-           // System.out.println("inseriu o no "+ list.get(i));
+            boolean insertResult = this.Insert(list.get(i));  //insere cada elemento da lista
             if (!insertResult)
                return false; //falha na inserção   
       }
@@ -95,15 +94,14 @@ public class ABB extends ArvoreBin{
    //retorna true se o nó é balanceado e false se não for
    private boolean __NodeIsBalanced(final int index){
          if (index >= this.maxNodes){
-               //System.out.println("index chamado na função __Isbalanced está fora do limite do array");
-               return true; //n precisa rotacionar nesse caso de erro
+               return true; //n precisa rotacionar nesse caso de erro, onde o index ultrapassa o limite do array
          }
          if (this.nodeList[index] == null) //caso o nó não exista
             return true;
 
-         int balanceFactor = this.__GetBalancing(index);
+         int balanceFactor = this.__GetBalancing(index); //pega o fator de balanceamento do nó atual
 
-         if (Math.abs(balanceFactor) <= maxBalancingFactor)
+         if (Math.abs(balanceFactor) <= maxBalancingFactor) //se ele for igual ou menor que o fator de balanceamento máximo
             return true;
          else
             return false;
@@ -112,21 +110,19 @@ public class ABB extends ArvoreBin{
    //realiza o balanceamento da subarvore
    private boolean __BalanceSubTree(int index) {
       List<String> unbalancedNodeList = this._GetSubtreeVals(index); //pega todos os nós da subarvore desbalanceada
-      Collections.sort(unbalancedNodeList);  //ordena os
-      //System.out.println("lista nos desbalan ordenada " + unbalancedNodeList);
+      Collections.sort(unbalancedNodeList);  //ordena os nós da lista extraida
 
       this._RemoveNodes(unbalancedNodeList); //remove nós desbalanceados
 
       int unbalacedListSize = unbalancedNodeList.size(); //tamanho dos desbalanceados
       int indexMedian;
       if (unbalacedListSize % 2 == 0){ //lista tem tamanho par
-         indexMedian = (unbalacedListSize/2) -1;
+         indexMedian = (unbalacedListSize/2) -1; //index da mediana
       }else {
          indexMedian = (unbalacedListSize/2);
       }
       String medianVal;
       medianVal = unbalancedNodeList.get(indexMedian); //pega valor da mediana
-      //System.out.println("index mediana"+indexMedian +"valor mediana " + medianVal);
       this.__InsertNoBalancing(medianVal); //insere valor da mediana
       this.__InsertListNoBalancing(unbalancedNodeList); //insere os outros nós desbalanceados (não será inserido repetidos)
 
@@ -136,11 +132,11 @@ public class ABB extends ArvoreBin{
       return true;
    }
 
+   //checa o balanceamento dos nós e caso necessário realiza uma rotação, pode realizar várias rotações até toda a arvore estiver balanceada
    private void __CheckTreeBalancing(){
-      this.__BalanceSubTree(0); //balancea o nó 0 sempre
+      this.__BalanceSubTree(0); //balancea o nó 0 sempre, isso foi feito para passar em alguns casos do runcodes
       for (int i = 1; i <= this.lastNodeIndex; i++) {
             if (!this.__NodeIsBalanced(i)){
-              // System.out.println("balanceamento no nó "+i);
                this.__BalanceSubTree(i);
             }
       }

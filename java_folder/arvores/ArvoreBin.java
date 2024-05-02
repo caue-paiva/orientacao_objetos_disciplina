@@ -37,11 +37,11 @@ public class ArvoreBin {
          return true;
       }
 
-      int indexToInsert = this._FindIndex(0, value);
+      int indexToInsert = this._FindIndex(0, value); //acha o index certo para inserir
 
       this.nodeList[indexToInsert] = value;
       this.nodeNumber++;
-      this._FindLastNodeIndex();
+      this._FindLastNodeIndex(); //acha o index do último nó
 
       return true;
    }
@@ -295,6 +295,7 @@ public class ArvoreBin {
       return 1 + this._CountNodes(_LeftChild(i)) + this._CountNodes(_RightChild(i));
 
    }
+
 
    protected int _NodeRight (final int i){
       if (i > this.lastNodeIndex)
