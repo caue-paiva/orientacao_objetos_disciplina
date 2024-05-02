@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
@@ -25,16 +24,18 @@ public class ABB extends ArvoreBin{
       super(len);
    }
 
+   //override na inserção , usando parte da lógica da inserção da classe mae mas com o balanceamento
    @Override
    public boolean Insert(String value){
       super.Insert(value);
 
-      if (this.nodeNumber > 2) //so balancea se tiver mais de 2 nós, já que nunca vai ficar desbalanceado so com 2 nós na arvore, antes isso fazia uns casos do runcodes dar problema
+      if (this.nodeNumber > 2) //so balancea se tiver mais de 2 nós, já que nunca vai ficar desbalanceado so com 2 nós na arvore, sem isso uns casos do runcodes davam problema
          this.__CheckTreeBalancing(); //ve se a arvore precisa de balanceamento
       
       return true;
    }
 
+   //override na inserção de lista, usando parte da lógica da inserção de lista  da classe mae mas com o balanceamento
    @Override
    public boolean InsertList(final List<String> list) {        
       for (int i = 0; i < list.size(); i++) {
@@ -51,8 +52,8 @@ public class ABB extends ArvoreBin{
       return super.Insert(value);
    }
 
-   private boolean __InsertListNoBalancing(List<String> list){//insere uma lista sem balanceamento usado a função da arvore mãe
-      //, usado na logica de balanceamento ao inserir nós na ordem correta
+   //insere uma lista sem balanceamento usado a função da arvore mãe
+   private boolean __InsertListNoBalancing(List<String> list){ //, usado na logica de balanceamento ao inserir nós na ordem correta
       for (int i = 0; i < list.size(); i++) {
          boolean insertResult = this.__InsertNoBalancing(list.get(i)); 
          if (!insertResult)
@@ -61,15 +62,17 @@ public class ABB extends ArvoreBin{
       return true;
    }
 
+   //override na remoção, usando parte da lógica da remoção da classe mae mas com o balanceamento
    @Override
    public boolean Remove (String value){
       super.Remove(value); //chama a funcionalidade de busca da classe parente
       
-      if (this.nodeNumber > 0) //so balancea se a arvore n tiver vazia, dava erro antes sem isso
+      if (this.nodeNumber > 0) //so balancea se a arvore n tiver vazia, sem isso uns casos do runcodes davam problema
          this.__CheckTreeBalancing(); //realiza operações de balanceamento caso seja necessário
       return true;
    }
 
+   //retorna o int que representa o fator de balanceamento da ABB
    private int __GetBalancing(final int index){
 
          int leftchild = _LeftChild(index);
@@ -89,6 +92,7 @@ public class ABB extends ArvoreBin{
          return leftChildNumNodes - rightChildNumNodes; //retorna o tamanho (num de nós) da subarvore esquerda - sub-arvore dir
    }
 
+   //retorna true se o nó é balanceado e false se não for
    private boolean __NodeIsBalanced(final int index){
          if (index >= this.maxNodes){
                //System.out.println("index chamado na função __Isbalanced está fora do limite do array");
@@ -105,6 +109,7 @@ public class ABB extends ArvoreBin{
             return false;
    }
 
+   //realiza o balanceamento da subarvore
    private boolean __BalanceSubTree(int index) {
       List<String> unbalancedNodeList = this._GetSubtreeVals(index); //pega todos os nós da subarvore desbalanceada
       Collections.sort(unbalancedNodeList);  //ordena os
