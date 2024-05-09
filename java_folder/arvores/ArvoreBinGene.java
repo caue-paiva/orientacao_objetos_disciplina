@@ -102,7 +102,7 @@ public class ArvoreBinGene <T extends Comparable<T> > {
       String treeStr = "digraph {";
 
       if (this.nodeNumber == 1){ //caso a arvore so tenha 1 nó
-         T nodeVal = this.nodeList[0].toString();
+         String nodeVal = this.nodeList[0].toString();
          treeStr += String.format( "\n\"%d %s\" }", 0,nodeVal);
          return treeStr;
       }else { //caso a arvore so tenha mais de um nó
