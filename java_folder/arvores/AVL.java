@@ -3,7 +3,7 @@ import java.util.List;
 
 public class AVL extends ArvoreBin {
    
-   private static final int maxBalancingFactor = 1;
+   private static final int maxBalancingFactor = 1; //constante privada para o fator de balanceamento máximo
 
    public static void main(String[] args) {
       AVL avl = new AVL(50);
@@ -79,8 +79,7 @@ public class AVL extends ArvoreBin {
          return;
       }
 
-      int rootBalancingFactor = this.__GetBalancing(index);
-      //System.out.println("fator balan" + rootBalancingFactor);
+      int rootBalancingFactor = this.__GetBalancing(index); //fator de balanceamento do nó raiz
 
       if (rootBalancingFactor > 0 ){ //valor positivo, ta pendendo pra esquerda
          int leftChildBalancing =  this.__GetBalancing(_LeftChild(index));
@@ -117,7 +116,7 @@ public class AVL extends ArvoreBin {
       String leftSon = null;
       String rightSon = null;
       
-      if (leftChildIndex > -1 && leftChildIndex < this.maxNodes)
+      if (leftChildIndex > -1 && leftChildIndex < this.maxNodes) //caso o index dos filhos esquerdo ou direito estejam dentro dos limites do array
          leftSon = this.nodeList[leftChildIndex];
       if (rightChildIndex > -1 && rightChildIndex < this.maxNodes)
          rightSon = this.nodeList[rightChildIndex];
@@ -160,7 +159,6 @@ public class AVL extends ArvoreBin {
                 return true;
             }
          }
-
          return false;
    }
 

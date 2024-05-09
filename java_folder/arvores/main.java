@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class main {
 
    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in); //instancia o scanner
         final int len = 1000;
         AVL avl = new AVL(len); //instancia todas as arvores
         ArvoreBin ab = new ArvoreBin(len);
@@ -36,7 +36,7 @@ public class main {
         System.out.println();
         System.out.println(avl.toString());
         System.out.println();
-        scanner.close();
+        scanner.close(); //fecha o scanner
     }
     
    }
