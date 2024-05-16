@@ -108,16 +108,14 @@ if __name__ == "__main__":
 
    while True:
       try:
-         linha_lida:str = input()
-         if linha_lida == "":
+         linha_lida:str = input() #le linha de input
+         if linha_lida == "": #linha lida é vazia, da break
             break
-
-         comando: str = linha_lida[0]
-         valor_inserir:str = linha_lida[2:]
-         arv1.inserir(valor_inserir)
-      except EOFError:
+         valor_inserir:str = linha_lida[2:] #pula o char do comando e do whitespace logo depois
+         arv1.inserir(valor_inserir) #insere a string na arvore
+      except EOFError: #não conseguiu ler o input, sai do loop
          break
    
-   arv1.print_em_ordem()
-   print(arv1)
+   arv1.print_em_ordem() #print dos nós em ordem
+   print(arv1) #printa arvore usando o __str__
 
