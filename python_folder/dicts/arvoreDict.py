@@ -88,7 +88,7 @@ class ArvoBinaDict:
          return True
       
    def __str__(self) -> str:
-      str_retorno: str = "Digraph {\n"
+      str_retorno: str = "digraph {\n"
       for key, value in self.dict_nos.items():
          esq,dir  = value
          
@@ -118,4 +118,5 @@ if __name__ == "__main__":
    
    arv1.print_em_ordem() #print dos nós em ordem
    print(arv1) #printa arvore usando o __str__
+   print()
 
